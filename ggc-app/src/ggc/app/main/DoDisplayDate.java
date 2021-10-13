@@ -8,14 +8,20 @@ import ggc.WarehouseManager;
  * Show current date.
  */
 class DoDisplayDate extends Command<WarehouseManager> {
+	private int date = 0;
 
-  DoDisplayDate(WarehouseManager receiver) {
-    super(Label.SHOW_DATE, receiver);
-  }
+	DoDisplayDate(WarehouseManager receiver) {
+		super(Label.SHOW_DATE, receiver);
+	}
 
-  @Override
-  public final void execute() throws CommandException {
-    //FIXME implement command
-  }
+	@Override
+	public final void execute() throws CommandException {
+		// Fetch days from WarehouseManager
+		date = _receiver.getDate();
+
+		// Displays date on Display
+		_display.addLine(Message.currentDate(date));
+		_display.display();
+	}
 
 }

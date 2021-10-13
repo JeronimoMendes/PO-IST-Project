@@ -10,54 +10,76 @@ import java.io.FileNotFoundException;
 /** Façade for access. */
 public class WarehouseManager {
 
-  /** Name of file storing current store. */
-  private String _filename = "";
+	/** Name of file storing current store. */
+	private String _filename = "";
 
-  /** The warehouse itself. */
-  private Warehouse _warehouse = new Warehouse();
+	/** The warehouse itself. */
+	private Warehouse _warehouse = new Warehouse();
 
-  //FIXME define other attributes
-  //FIXME define constructor(s)
-  //FIXME define other methods
+	//FIXME define other attributes
+	//FIXME define constructor(s)
+	//FIXME define other methods
 
-  /**
-   * @@throws IOException
-   * @@throws FileNotFoundException
-   * @@throws MissingFileAssociationException
-   */
-  public void save() throws IOException, FileNotFoundException, MissingFileAssociationException {
-    //FIXME implement serialization method
-  }
+	/**
+	 * @@throws IOException
+	 * @@throws FileNotFoundException
+	 * @@throws MissingFileAssociationException
+	 */
+	public void save() throws IOException, FileNotFoundException, MissingFileAssociationException {
+		//FIXME implement serialization method
+	}
 
-  /**
-   * @@param filename
-   * @@throws MissingFileAssociationException
-   * @@throws IOException
-   * @@throws FileNotFoundException
-   */
-  public void saveAs(String filename) throws MissingFileAssociationException, FileNotFoundException, IOException {
-    _filename = filename;
-    save();
-  }
+	/**
+	 * @@param filename
+	 * @@throws MissingFileAssociationException
+	 * @@throws IOException
+	 * @@throws FileNotFoundException
+	 */
+	public void saveAs(String filename) throws MissingFileAssociationException, FileNotFoundException, IOException {
+		_filename = filename;
+		save();
+	}
 
-  /**
-   * @@param filename
-   * @@throws UnavailableFileException
-   */
-  public void load(String filename) throws UnavailableFileException {
-    //FIXME implement serialization method
-  }
+	/**
+	 * @@param filename
+	 * @@throws UnavailableFileException
+	 */
+	public void load(String filename) throws UnavailableFileException {
+		//FIXME implement serialization method
+	}
 
-  /**
-   * @param textfile
-   * @throws ImportFileException
-   */
-  public void importFile(String textfile) throws ImportFileException {
-    try {
-	    _warehouse.importFile(textfile);
-    } catch (IOException | BadEntryException /* FIXME maybe other exceptions */ e) {
-	    throw new ImportFileException(textfile);
-    }
-  }
+	/**
+	 * @param textfile
+	 * @throws ImportFileException
+	 */
+	public void importFile(String textfile) throws ImportFileException {
+		try {
+			_warehouse.importFile(textfile);
+		} catch (IOException | BadEntryException /* FIXME maybe other exceptions */ e) {
+			throw new ImportFileException(textfile);
+		}
+	}
 
+	/**
+	 *  ################################ Date ################################
+	 */
+
+	/**
+	 * 	Returns warehouse's date
+	 * 
+	 * @return days warehouse's date
+	 */
+	public int getDate() {
+		return _warehouse.getDate();
+	}
+	
+	/**
+	 * 	Advance warehouse's date
+	 * 
+	 * @param days number of days to advance
+	 * @throws InvalidDaysException number of days was negative or null
+	 */
+	public void advanceDate(int days) throws InvalidDaysException{
+		_warehouse.advanceDate(days);
+	}
 }
