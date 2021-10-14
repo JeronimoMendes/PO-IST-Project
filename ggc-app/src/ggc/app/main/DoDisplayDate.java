@@ -20,8 +20,7 @@ class DoDisplayDate extends Command<WarehouseManager> {
 		date = _receiver.getDate();
 
 		// Displays date on Display
-		_display.addLine(Message.currentDate(date));
-		_display.display();
+		_display.popup(Message.currentDate(date));
 	}
 
 }
