@@ -29,5 +29,11 @@ public class Partner implements Serializable {
 		super();
 		_id = id;
 		_name = name;
+		_address = address;
+	}
+
+	@Override
+	public String toString() {
+		return "PARTNER|" + _id + "|" + _name + "|" + _address;
 	}
 }

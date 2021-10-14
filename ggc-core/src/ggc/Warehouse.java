@@ -7,8 +7,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 import java.util.regex.Pattern;
+import java.util.TreeMap;
+import java.util.Map;
 
-// FIXME import classes (cannot import from pt.tecnico or ggc.app)
+import ggc.partners.Partner;
+
 
 /**
  * Class Warehouse implements a warehouse.
@@ -19,7 +22,13 @@ public class Warehouse implements Serializable {
 	private static final long serialVersionUID = 202109192006L;
 
 	// FIXME define attributes
+
+	/** Warehouse's date */
 	private int _date = 0;
+
+	/** Warehouse's partners */
+	private Map<String, Partner> _partners = new TreeMap<String, Partner>(String.CASE_INSENSITIVE_ORDER);
+
 	// FIXME define contructor(s)
 	// FIXME define methods
 
@@ -56,12 +65,12 @@ public class Warehouse implements Serializable {
 		Pattern buy = Pattern.compile("^(COMPRA)");
 		Pattern breakdown = Pattern.compile("^(DESAGREGAÇÃO)");
 
-		if (partner.matcher(fields[0]).matches()) {System.out.println("PARTNER");}
-		else if (simpleBatch.matcher(fields[0]).matches()) {System.out.println("SIMPLE_BATCH");}
-		else if (complexBatch.matcher(fields[0]).matches()) {System.out.println("COMPLEX_BATCH");}
-		else if (sale.matcher(fields[0]).matches()) {System.out.println("SALE");}
-		else if (buy.matcher(fields[0]).matches()) {System.out.println("BUY");}
-		else if (breakdown.matcher(fields[0]).matches()) {System.out.println("BREAKDOWN");}
+		if (partner.matcher(fields[0]).matches()) {registerPartner(fields[1], fields[2], fields[3]);}
+		else if (simpleBatch.matcher(fields[0]).matches()) {}
+		else if (complexBatch.matcher(fields[0]).matches()) {}
+		else if (sale.matcher(fields[0]).matches()) {}
+		else if (buy.matcher(fields[0]).matches()) {}
+		else if (breakdown.matcher(fields[0]).matches()) {}
 	}
 
 	/**
@@ -82,5 +91,30 @@ public class Warehouse implements Serializable {
 		} else {
 			throw new InvalidDaysException(days);
 		}
+	}
+
+	/**
+	 * ################################# File #################################
+	 */
+
+	/**
+	 * Create new partner
+	 * 
+	 * 
+	*/
+	void registerPartner(String id, String name, String Address) {
+		Partner newPartner = new Partner(id, name, Address);
+		_partners.put(id, newPartner);
+	}
+
+	void listPartners() {
+		String list = "";
+
+		for(Map.Entry<String, Partner> entry : _partners.entrySet()) {
+				list += entry.getValue().toString();
+				list += "\n";
+		}
+
+		return list;
 	}
 }
