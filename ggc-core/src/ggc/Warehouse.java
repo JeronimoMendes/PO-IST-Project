@@ -11,6 +11,9 @@ import java.util.TreeMap;
 import java.util.Map;
 
 import ggc.partners.Partner;
+import ggc.products.Batch;
+import ggc.products.Product;
+import ggc.products.ComposedProduct;
 
 
 /**
@@ -28,6 +31,12 @@ public class Warehouse implements Serializable {
 
 	/** Warehouse's partners */
 	private Map<String, Partner> _partners = new TreeMap<String, Partner>(String.CASE_INSENSITIVE_ORDER);
+
+	/** Warehouse's batches */
+	private Map<String, Batch> _batches = new TreeMap<String, Batch>(String.CASE_INSENSITIVE_ORDER);
+
+	/** Warehouse's product */
+	private Map<String, Product> _products = new TreeMap<String, Product>(String.CASE_INSENSITIVE_ORDER);
 
 	// FIXME define contructor(s)
 	// FIXME define methods
@@ -66,8 +75,17 @@ public class Warehouse implements Serializable {
 		Pattern breakdown = Pattern.compile("^(DESAGREGAÇÃO)");
 
 		if (partner.matcher(fields[0]).matches()) {registerPartner(fields[1], fields[2], fields[3]);}
-		else if (simpleBatch.matcher(fields[0]).matches()) {}
-		else if (complexBatch.matcher(fields[0]).matches()) {}
+		else if (simpleBatch.matcher(fields[0]).matches()) {
+			int stock = Integer.parseInt(fields[4]);
+			double price = Double.parseDouble(fields[3]);
+			registerSimpleBatch(fields[2], fields[1], stock, price);
+		}
+		else if (complexBatch.matcher(fields[0]).matches()) {
+			int stock = Integer.parseInt(fields[4]);
+			double price = Double.parseDouble(fields[3]);
+			double alpha = Double.parseDouble(fields[5]);
+			registerComplexBatch(fields[2], fields[1], stock, price, alpha, fields[6]);
+		}
 		else if (sale.matcher(fields[0]).matches()) {}
 		else if (buy.matcher(fields[0]).matches()) {}
 		else if (breakdown.matcher(fields[0]).matches()) {}
@@ -117,4 +135,75 @@ public class Warehouse implements Serializable {
 
 		return list;
 	}
+
+	/**
+	 * ############################### Product & Batches ###############################
+	 */
+
+	/**
+	 * Registers a new Batch composed of a simple Product
+	 * 
+	 * @param sID Supplier's string ID
+	 * @param pID Product's string ID
+	 * @param stock number of units that will be sold in the batch
+	 * @param price price of 1 unit of product
+	 */
+	void registerSimpleBatch(String sID, String pID, int stock, double price) {
+		if (!productExists(pID)) {
+			registerProduct(pID);
+		}
+
+		Batch newBatch = new Batch(sID, pID, stock, price);
+		_batches.put(pID, newBatch);
+	}
+
+	/**
+	 * Registers a new Batch composed of a composed Product
+	 * 
+	 * @param sID Supplier's string ID
+	 * @param pID Product's string ID
+	 * @param stock number of units that will be sold in the batch
+	 * @param price price of 1 unit of product
+	 * @param alpha number that multiplies the combined price of the ComposedProduct
+	 * @param recipe recipe for the ComposedProduct
+	 */
+	void registerComplexBatch(String sID, String pID, int stock, double price, double alpha, String recipe) {
+		if (!productExists(pID)) {
+			registerProduct(pID, recipe);
+		}
+		
+		Batch newBatch = new Batch(sID, pID, stock, price);
+		_batches.put(pID, newBatch);
+	}
+
+	/**
+	 * Checks if there's a registered product with a given ID		
+	 * 
+	 * @param pID Product's ID
+	 * @return boolean 
+	 */
+	boolean productExists(String pID) {
+		return _products.containsKey(pID);
+	}
+
+	/**
+	 * Registers a simple Product
+	 * 
+	 * @param pID Product's ID
+	 */
+	void registerProduct(String pID) {
+		Product newProduct = new Product(pID);
+	}
+
+	/**
+	 * Registers a composed Product
+	 * 
+	 * @param pID Product's ID
+	 */
+	void registerProduct(String pID, String recipe) {
+		// TODO: parse the recipe
+
+		Product newProduct = new Product(pID);
+	}
+
 }

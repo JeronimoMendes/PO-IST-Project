@@ -4,11 +4,11 @@ import ggc.partners.Partner;
 import java.io.Serializable;
 
 public class Batch implements Serializable {
-	/** Partner that supplies the batch */
-	private Partner _supplier;
+	/** Partner's ID that supplies the batch */
+	private String _supplier;
 
-	/** Product that makes up the batch */
-	private Product _product;
+	/** Product's ID that makes up the batch */
+	private String _product;
 
 	/** Number of product available in the batch */
 	private int _stock;
@@ -16,11 +16,13 @@ public class Batch implements Serializable {
 	/** Price of 1 unit of product */
 	private double _price;
 
+	/** Number that multiplies the price of the Product, in case it is a composed Product */
+	private double _alpha;
 
 	/**
-	 * Main constructor
+	 * Constructor for a batch of a simple Product
 	 */
-	public Batch(Partner supplier, Product product, int stock, double price) {
+	public Batch(String supplier, String product, int stock, double price) {
 		_supplier = supplier;
 		_product = product;
 		_stock = stock;
@@ -28,18 +30,30 @@ public class Batch implements Serializable {
 	}
 
 	/**
+	 * COnstructor for a batch of a composed Product
+	 */
+	public Batch(String supplier, String product, int stock, double price, double alpha) {
+		_supplier = supplier;
+		_product = product;
+		_stock = stock;
+		_price = price;
+		_alpha = alpha;
+	}
+
+
+	/**
 	 * Returns partner who's the supplier
 	 * 
 	 * @return supplier Partner
 	 */
-	public Partner getSupplier() { return _supplier; }
+	public String getSupplier() { return _supplier; }
 
 	/**
 	 * Returns the product that composes the batch
 	 * 
 	 * @return product Product
 	 */
-	public Product getProduct() { return _product; }
+	public String getProduct() { return _product; }
 
 	/**
 	 * Returns the remaining stock of product
