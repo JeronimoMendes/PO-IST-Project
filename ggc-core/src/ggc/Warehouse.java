@@ -107,7 +107,7 @@ public class Warehouse implements Serializable {
 		_partners.put(id, newPartner);
 	}
 
-	void listPartners() {
+	String listPartners() {
 		String list = "";
 
 		for(Map.Entry<String, Partner> entry : _partners.entrySet()) {
