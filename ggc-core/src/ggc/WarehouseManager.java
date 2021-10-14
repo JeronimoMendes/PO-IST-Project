@@ -13,12 +13,18 @@ public class WarehouseManager {
 	/** Name of file storing current store. */
 	private String _filename = "";
 
+
 	/** The warehouse itself. */
 	private Warehouse _warehouse = new Warehouse();
 
 	//FIXME define other attributes
 	//FIXME define constructor(s)
 	//FIXME define other methods
+
+
+	/**
+	 * ################################# File #################################
+	 */
 
 	/**
 	 * @@throws IOException
@@ -41,6 +47,8 @@ public class WarehouseManager {
 	}
 
 	/**
+	 * 	Loads a file from a previous session
+	 * 
 	 * @@param filename
 	 * @@throws UnavailableFileException
 	 */
@@ -49,6 +57,8 @@ public class WarehouseManager {
 	}
 
 	/**
+	 * 	Imports a file to initialize the app
+	 * 
 	 * @param textfile
 	 * @throws ImportFileException
 	 */
