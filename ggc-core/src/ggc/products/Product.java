@@ -12,4 +12,10 @@ public class Product implements Serializable {
 	public Product(String id){
 		_id = id;
 	}
+
+	@Override
+	public String toString() {
+		// TODO: Add search for the most expensive batch and total stock
+		return _id;
+	}
 }

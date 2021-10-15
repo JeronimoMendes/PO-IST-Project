@@ -227,6 +227,7 @@ public class Warehouse implements Serializable {
 	 */
 	void registerProduct(String pID) {
 		Product newProduct = new Product(pID);
+		_products.put(pID, newProduct);
 	}
 
 	/**
@@ -238,6 +239,21 @@ public class Warehouse implements Serializable {
 		// TODO: parse the recipe
 
 		Product newProduct = new Product(pID);
+	}
+
+	/**
+	 * Returns the list of all products
+	 * 
+	 * @return info String with info of all registered Products
+	 */
+	String listProducts() {
+		String info = "";
+
+		for (String key: _products.keySet()) {
+			info += _products.get(key).toString() + '\n';
+		}
+
+		return info;
 	}
 
 }

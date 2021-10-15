@@ -140,4 +140,11 @@ public class WarehouseManager {
 	public String listPartners() {
 		return _warehouse.listPartners();
 	}
+
+	/**
+	 * ############################### Product & Batches ###############################
+	 */
+	public String listProducts() {
+		return _warehouse.listProducts();
+	}
 }

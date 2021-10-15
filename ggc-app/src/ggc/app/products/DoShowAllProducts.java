@@ -10,13 +10,15 @@ import ggc.WarehouseManager;
  */
 class DoShowAllProducts extends Command<WarehouseManager> {
 
-  DoShowAllProducts(WarehouseManager receiver) {
-    super(Label.SHOW_ALL_PRODUCTS, receiver);
-  }
+	DoShowAllProducts(WarehouseManager receiver) {
+		super(Label.SHOW_ALL_PRODUCTS, receiver);
+	}
 
-  @Override
-  public final void execute() throws CommandException {
-    //FIXME implement command
-  }
+	@Override
+	public final void execute() throws CommandException {
+		String products = _receiver.listProducts();
+
+		_display.popup(products);
+	}
 
 }
