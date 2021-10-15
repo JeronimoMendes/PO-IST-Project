@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.ObjectInputStream;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.io.ObjectOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 
 
 
@@ -15,7 +18,7 @@ import java.io.FileInputStream;
 public class WarehouseManager {
 
 	/** Name of file storing current store. */
-	private String _filename = "";
+	public String _filename = "";
 
 
 	/** The warehouse itself. */
@@ -35,8 +38,14 @@ public class WarehouseManager {
 	 * @@throws FileNotFoundException
 	 * @@throws MissingFileAssociationException
 	 */
-	public void save() throws IOException, FileNotFoundException, MissingFileAssociationException {
-		//FIXME implement serialization method
+	public void save() throws IOException, MissingFileAssociationException {
+		try {
+			ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(_filename)));
+			output.writeObject(_warehouse);
+			output.close();
+		} catch(IOException e) {
+			throw new MissingFileAssociationException();
+		}
 	}
 
 	/**
@@ -45,7 +54,7 @@ public class WarehouseManager {
 	 * @@throws IOException
 	 * @@throws FileNotFoundException
 	 */
-	public void saveAs(String filename) throws MissingFileAssociationException, FileNotFoundException, IOException {
+	public void saveAs(String filename) throws MissingFileAssociationException, IOException {
 		_filename = filename;
 		save();
 	}
@@ -79,6 +88,15 @@ public class WarehouseManager {
 		} catch (IOException | BadEntryException /* FIXME maybe other exceptions */ e) {
 			throw new ImportFileException(textfile);
 		}
+	}
+
+	/**
+	 * Returns _filename
+	 * 
+	 * @return filename String
+	 */
+	public String getFilename() {
+		return _filename;
 	}
 
 	/**
