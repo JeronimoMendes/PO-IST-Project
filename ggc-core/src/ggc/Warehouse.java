@@ -149,6 +149,21 @@ public class Warehouse implements Serializable {
 	}
 
 	/**
+	 * Returns all the registered partners
+	 * 
+	 * @return partners list of all the partners
+	 */
+	String listPartners() {
+		String info = "";
+
+		for (String key: _partners.keySet()) {
+			info += _partners.get(key).toString() + '\n';
+		}
+
+		return info;
+	}
+
+	/**
 	 * Checks if a given partner's key corresponds to a registered partner
 	 */
 	boolean checkPartner(String partnerKey) {

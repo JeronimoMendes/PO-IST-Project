@@ -10,13 +10,15 @@ import ggc.WarehouseManager;
  */
 class DoShowAllPartners extends Command<WarehouseManager> {
 
-  DoShowAllPartners(WarehouseManager receiver) {
-    super(Label.SHOW_ALL_PARTNERS, receiver);
-  }
+	DoShowAllPartners(WarehouseManager receiver) {
+		super(Label.SHOW_ALL_PARTNERS, receiver);
+	}
 
-  @Override
-  public void execute() throws CommandException {
-    //FIXME implement command
-  }
+	@Override
+	public void execute() throws CommandException {
+		String partners = _receiver.listPartners();
+
+		_display.popup(partners);
+	}
 
 }

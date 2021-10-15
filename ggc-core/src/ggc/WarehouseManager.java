@@ -136,4 +136,8 @@ public class WarehouseManager {
 	public String getPartner(String partnerKey) throws UnknownPartnerException {
 		return _warehouse.getPartner(partnerKey);
 	}
+
+	public String listPartners() {
+		return _warehouse.listPartners();
+	}
 }
