@@ -121,4 +121,19 @@ public class WarehouseManager {
 	public void advanceDate(int days) throws InvalidDaysException{
 		_warehouse.advanceDate(days);
 	}
+
+	/**
+	 *  ###############################* Partners ###############################*
+	 */
+
+	/**
+	 * Retrieves information about a partner
+	 * 
+	 * @param partnerKey partner's id
+	 * 
+	 * @return partnerInfo toString() of Partner
+	 */
+	public String getPartner(String partnerKey) throws UnknownPartnerException {
+		return _warehouse.getPartner(partnerKey);
+	}
 }

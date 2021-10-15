@@ -112,7 +112,7 @@ public class Warehouse implements Serializable {
 	}
 
 	/**
-	 * ################################# File #################################
+	 * ############################### Partners ###############################
 	 */
 
 	/**
@@ -125,15 +125,34 @@ public class Warehouse implements Serializable {
 		_partners.put(id, newPartner);
 	}
 
-	String listPartners() {
-		String list = "";
-
-		for(Map.Entry<String, Partner> entry : _partners.entrySet()) {
-				list += entry.getValue().toString();
-				list += "\n";
+	/**
+	 * Returns information about a given partner
+	 * 
+	 * @param partnerKey partner's ID
+	 * 
+	 * @return info String with info about Partner
+	 */
+	String getPartner(String partnerKey) throws UnknownPartnerException {
+		if (!checkPartner(partnerKey)) {
+			throw new UnknownPartnerException(partnerKey);
 		}
+		
+		String info = "";
 
-		return list;
+		Partner partner = _partners.get(partnerKey);
+
+		info += partner.toString(); // + "\n";\
+
+		// TODO: Include partner's notifications
+
+		return info;
+	}
+
+	/**
+	 * Checks if a given partner's key corresponds to a registered partner
+	 */
+	boolean checkPartner(String partnerKey) {
+		return _partners.containsKey(partnerKey);
 	}
 
 	/**
