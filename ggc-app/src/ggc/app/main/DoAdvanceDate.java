@@ -13,12 +13,12 @@ import ggc.exceptions.InvalidDaysException;
  */
 class DoAdvanceDate extends Command<WarehouseManager> {
 	
+	/** Number of days to advance */
 	private int _days;
 
 	DoAdvanceDate(WarehouseManager receiver) {
 		super(Label.ADVANCE_DATE, receiver);
-		//FIXME add command fields
-		addIntegerField("date", Message.advanceDate());
+		addIntegerField("date", Prompt.daysToAdvance());
 	}
 
 	@Override

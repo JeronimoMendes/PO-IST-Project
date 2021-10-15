@@ -3,6 +3,10 @@ package ggc;
 import ggc.exceptions.*;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.io.ObjectInputStream;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+
 
 
 //FIXME import classes (cannot import from pt.tecnico or ggc.app)
@@ -53,7 +57,14 @@ public class WarehouseManager {
 	 * @@throws UnavailableFileException
 	 */
 	public void load(String filename) throws UnavailableFileException {
-		//FIXME implement serialization method
+		try {
+			ObjectInputStream input = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filename)));
+			_warehouse = (Warehouse) input.readObject();
+			input.close();
+			_filename = filename;
+		} catch (IOException | ClassNotFoundException e) {
+			throw new UnavailableFileException(filename);
+		}
 	}
 
 	/**
