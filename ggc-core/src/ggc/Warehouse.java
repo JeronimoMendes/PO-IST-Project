@@ -256,4 +256,22 @@ public class Warehouse implements Serializable {
 		return info;
 	}
 
+	/**
+	 * Returns list of all available batches (stock > 0)
+	 * 
+	 * @return String info of all available batches
+	 */
+	String listAvailableBatches() {
+		String info = "";
+
+		for (String key: _batches.keySet()) {
+			Batch batch = _batches.get(key);
+			if (batch.getStock() > 0) {
+				info += batch.toString() + '\n';
+			}
+		}
+
+		return info;
+	}
+
 }

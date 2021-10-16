@@ -10,13 +10,15 @@ import ggc.WarehouseManager;
  */
 class DoShowAvailableBatches extends Command<WarehouseManager> {
 
-  DoShowAvailableBatches(WarehouseManager receiver) {
-    super(Label.SHOW_AVAILABLE_BATCHES, receiver);
-  }
+	DoShowAvailableBatches(WarehouseManager receiver) {
+		super(Label.SHOW_AVAILABLE_BATCHES, receiver);
+	}
 
-  @Override
-  public final void execute() throws CommandException {
-    //FIXME implement command
-  }
+	@Override
+	public final void execute() throws CommandException {
+		String batches = _receiver.listAvailableBatches();
+
+		_display.popup(batches);
+	}
 
 }

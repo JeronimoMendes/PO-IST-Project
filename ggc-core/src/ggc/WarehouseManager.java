@@ -147,4 +147,8 @@ public class WarehouseManager {
 	public String listProducts() {
 		return _warehouse.listProducts();
 	}
+
+	public String listAvailableBatches() {
+		return _warehouse.listAvailableBatches();
+	}
 }

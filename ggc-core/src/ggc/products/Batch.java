@@ -69,4 +69,9 @@ public class Batch implements Serializable {
 	 */
 	public double getPrice() { return _price; }
 
+	@Override
+	public String toString() {
+		return String.format("%s|%s|%f|%d", _supplier, _product, _price, _stock);
+	}
+
 }
