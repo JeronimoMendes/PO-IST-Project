@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.ObjectOutputStream;
+import java.util.DuplicateFormatFlagsException;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 
@@ -82,7 +83,7 @@ public class WarehouseManager {
 	 * @param textfile
 	 * @throws ImportFileException
 	 */
-	public void importFile(String textfile) throws ImportFileException {
+	public void importFile(String textfile) throws ImportFileException, DuplicatePartnerException {
 		try {
 			_warehouse.importFile(textfile);
 		} catch (IOException | BadEntryException /* FIXME maybe other exceptions */ e) {
@@ -150,5 +151,9 @@ public class WarehouseManager {
 
 	public String listAvailableBatches() {
 		return _warehouse.listAvailableBatches();
+	}
+
+	public void registerPartner(String id, String name, String address) throws DuplicatePartnerException {
+		_warehouse.registerPartner(id, name, address);
 	}
 }

@@ -4,6 +4,7 @@ import pt.tecnico.uilib.Dialog;
 import pt.tecnico.uilib.menus.Menu;
 import ggc.WarehouseManager;
 import ggc.exceptions.ImportFileException;
+import ggc.exceptions.DuplicatePartnerException;
 
 /** Main driver for the management application. */
 public class App {
@@ -17,7 +18,7 @@ public class App {
       if (datafile != null) {
         try {
           manager.importFile(datafile);
-        } catch (ImportFileException e) {
+        } catch (ImportFileException | DuplicatePartnerException e) {
           // no behavior described: just present the problem
           e.printStackTrace();
         }

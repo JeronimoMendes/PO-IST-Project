@@ -50,7 +50,7 @@ public class Warehouse implements Serializable {
 	 * @throws IOException
 	 * @throws BadEntryException
 	 */
-	void importFile(String txtfile) throws IOException, BadEntryException /* FIXME maybe other exceptions */ {
+	void importFile(String txtfile) throws IOException, BadEntryException, DuplicatePartnerException {
 		// TODO: Add exceptions that come from parseline()
 		
 		BufferedReader input = new BufferedReader(new FileReader(txtfile));
@@ -64,7 +64,7 @@ public class Warehouse implements Serializable {
 		input.close();
 	}
 
-	void parseLine(String fields[]) {
+	void parseLine(String fields[]) throws DuplicatePartnerException {
 		// TODO: Add exceptions that come from the different objects creations
 
 		Pattern partner = Pattern.compile("^(PARTNER)");
@@ -120,8 +120,12 @@ public class Warehouse implements Serializable {
 	 * 
 	 * 
 	*/
-	void registerPartner(String id, String name, String Address) {
-		Partner newPartner = new Partner(id, name, Address);
+	void registerPartner(String id, String name, String address) throws DuplicatePartnerException {
+		if (checkPartner(id)) {
+			throw new DuplicatePartnerException(id);
+		}
+
+		Partner newPartner = new Partner(id, name, address);
 		_partners.put(id, newPartner);
 	}
 
