@@ -166,7 +166,7 @@ public class Warehouse implements Serializable {
 			info += _partners.get(key).toString() + '\n';
 		}
 
-		return info;
+		return info.substring(0, info.length() - 1); // remove the last \n
 	}
 
 	/**
@@ -264,12 +264,12 @@ public class Warehouse implements Serializable {
 			double max = getMaxPrice(batches);
 			int stock = getStockOfProduct(batches);
 			
-			String productInfo = product.toString() + "|" + max + "|" + stock + "\n";
+			String productInfo = product.toString() + "|" + (int)max + "|" + stock + "\n";
 
 			info += productInfo;
 		}
 
-		return info;
+		return info.substring(0, info.length() - 1); // remove the last \n
 	}
 
 	/**
@@ -343,7 +343,7 @@ public class Warehouse implements Serializable {
 			}
 		}
 
-		return info;
+		return info.substring(0, info.length() - 1); // remove the last \n
 	}
 
 }
