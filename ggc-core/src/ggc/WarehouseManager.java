@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.DuplicateFormatFlagsException;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
+import ggc.exceptions.DuplicatePartnerException;
 
 
 
@@ -83,10 +84,10 @@ public class WarehouseManager {
 	 * @param textfile
 	 * @throws ImportFileException
 	 */
-	public void importFile(String textfile) throws ImportFileException, DuplicatePartnerException {
+	public void importFile(String textfile) throws ImportFileException {
 		try {
 			_warehouse.importFile(textfile);
-		} catch (IOException | BadEntryException /* FIXME maybe other exceptions */ e) {
+		} catch (IOException | BadEntryException | DuplicatePartnerException /* FIXME maybe other exceptions */ e) {
 			throw new ImportFileException(textfile);
 		}
 	}

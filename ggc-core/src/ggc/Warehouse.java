@@ -9,6 +9,8 @@ import java.io.FileReader;
 import java.util.regex.Pattern;
 import java.util.TreeMap;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import ggc.partners.Partner;
 import ggc.products.Batch;
@@ -209,7 +211,7 @@ public class Warehouse implements Serializable {
 		if (!productExists(pID)) {
 			registerProduct(pID, recipe);
 		}
-		
+
 		Batch newBatch = new Batch(sID, pID, stock, price);
 		_batches.put(pID, newBatch);
 	}
@@ -243,6 +245,7 @@ public class Warehouse implements Serializable {
 		// TODO: parse the recipe
 
 		Product newProduct = new Product(pID);
+		_products.put(pID, newProduct);
 	}
 
 	/**
@@ -254,10 +257,75 @@ public class Warehouse implements Serializable {
 		String info = "";
 
 		for (String key: _products.keySet()) {
-			info += _products.get(key).toString() + '\n';
+			// get batches of this product
+			Product product = _products.get(key);
+
+			List<Batch> batches = getBatchesOfProduct(product);
+			double max = getMaxPrice(batches);
+			int stock = getStockOfProduct(batches);
+			
+			String productInfo = product.toString() + "|" + max + "|" + stock + "\n";
+
+			info += productInfo;
 		}
 
 		return info;
+	}
+
+	/**
+	 * Returns maximum price of list of batches
+	 * 
+	 * @param batches List of batches to iterate
+	 * 
+	 * @return max maximum price of the given batches
+	 */
+	double getMaxPrice(List<Batch> batches) {
+		double max = 0;
+		for (Batch batch: batches) {
+			if (batch.getPrice() > max) {
+				max = batch.getPrice();
+			}
+		}
+		
+		return max;
+	}
+
+	/**
+	 * Returns the stock of a product in a given list of batches
+	 * 
+	 * @param batches List of batches
+	 * 
+	 * @return int stock
+	 */
+	int getStockOfProduct(List<Batch> batches) {
+		int stock = 0;
+		for (Batch batch: batches) {
+			stock += batch.getStock();
+		}
+		
+		return stock;
+	}
+
+	/**
+	 * Returns an array of batchs of a given Product
+	 * 
+	 * @param product Product to filter the array of batchs
+	 * 
+	 * @return batches list of batches of the given product
+	 */
+	List<Batch> getBatchesOfProduct(Product product) {
+		List<Batch> batches = new ArrayList();
+
+		for (String key: _batches.keySet()) {
+			Batch batch = _batches.get(key);
+			Product batchProduct = _products.get(batch.getProduct());
+
+			if (batchProduct.equals(product)) {
+				batches.add(batch);
+			}
+		}
+
+		return batches;
 	}
 
 	/**
