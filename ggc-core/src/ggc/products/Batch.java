@@ -71,7 +71,7 @@ public class Batch implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("%s|%s|%f|%d", _supplier, _product, _price, _stock);
+		return String.format("%s|%s|%d|%d", _supplier, _product, (int)_price, _stock);
 	}
 
 }
