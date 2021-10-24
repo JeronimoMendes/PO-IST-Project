@@ -51,7 +51,7 @@ public class Partner implements Serializable {
 	@Override
 	public String toString() {
 		String res = String.format(
-			"PARTNER|%s|%s|%s|%s|%d|%d|%d|%d",
+			"%s|%s|%s|%s|%d|%d|%d|%d",
 			_id, _name, _address,
 			_status.toString(), _score,
 			(int)_accquisitionsValue, (int)_salesValue, (int)_salesPaidValue
