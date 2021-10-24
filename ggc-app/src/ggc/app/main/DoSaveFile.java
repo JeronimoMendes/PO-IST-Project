@@ -27,7 +27,7 @@ class DoSaveFile extends Command<WarehouseManager> {
 	public final void execute() throws CommandException {
 		try {
 			if (_receiver.getFilename().isEmpty()) {
-				String newFilename = _fileForm.requestString(Prompt.saveAs()); //_fileForm.requestString(Prompt.saveAs())
+				String newFilename = _fileForm.requestString(Prompt.saveAs());
 				_receiver.saveAs(newFilename);
 			} else {
 				_receiver.save();

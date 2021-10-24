@@ -47,7 +47,9 @@ public class Warehouse implements Serializable {
 	// FIXME define methods
 
 	/**
+	 * ########################################################################
 	 * ################################# File #################################
+	 * ########################################################################
 	 */
 
 	/**
@@ -117,7 +119,9 @@ public class Warehouse implements Serializable {
 	}
 
 	/**
+	 * ########################################################################
 	 * ############################### Partners ###############################
+	 * ########################################################################
 	 */
 
 	/**
@@ -180,7 +184,9 @@ public class Warehouse implements Serializable {
 	}
 
 	/**
+	 * #################################################################################
 	 * ############################### Product & Batches ###############################
+	 * #################################################################################
 	 */
 
 	/**
@@ -212,7 +218,7 @@ public class Warehouse implements Serializable {
 	 */
 	void registerComplexBatch(String sID, String pID, int stock, double price, double alpha, String recipe) {
 		if (!productExists(pID)) {
-			registerProduct(pID, recipe);
+			registerProduct(pID, alpha, recipe);
 		}
 
 		Batch newBatch = new Batch(sID, pID, stock, price);
@@ -244,10 +250,10 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @param pID Product's ID
 	 */
-	void registerProduct(String pID, String recipe) {
+	void registerProduct(String pID, double alpha, String recipe) {
 		// TODO: parse the recipe
 
-		Product newProduct = new Product(pID);
+		Product newProduct = new ComposedProduct(pID, alpha, recipe);
 		_products.put(pID, newProduct);
 	}
 
@@ -260,14 +266,13 @@ public class Warehouse implements Serializable {
 		String info = "";
 
 		for (String key: _products.keySet()) {
-			// get batches of this product
 			Product product = _products.get(key);
 
 			List<Batch> batches = getBatchesOfProduct(product);
-			double max = getMaxPrice(batches);
-			int stock = getStockOfProduct(batches);
+			product.setMaxPrice(getMaxPrice(batches));
+			product.setStock(getStockOfProduct(batches));
 			
-			String productInfo = product.toString() + "|" + (int)max + "|" + stock + "\n";
+			String productInfo = product.toString() + "\n";
 
 			info += productInfo;
 		}

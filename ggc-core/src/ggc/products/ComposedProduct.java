@@ -3,9 +3,12 @@ package ggc.products;
 import java.util.Map;
 import java.util.List;
 
+// Locale is used to have a "." separating integer and decimal part 
+import java.util.Locale;
+
 public class ComposedProduct extends Product {
 	/** Recipe of products that composes this Composed Product */
-	private Map<Integer, Product>[] _recipe;
+	private String _recipe;
 	
 	/** Number that multiplies the combined price of each Product in the recipe */
 	private double _alpha;
@@ -13,9 +16,14 @@ public class ComposedProduct extends Product {
 	/**
 	 * Main constructor
 	 */
-	public ComposedProduct(String id, Map<Integer, Product>[] recipe, double alpha) {
+	public ComposedProduct(String id, double alpha, String recipe) {
 		super(id);
 		_recipe = recipe;
 		_alpha = alpha;
+	}
+
+	@Override
+	public String toString() {
+		return String.format(Locale.US, "%s|%d|%d|%.1f|%s", _id, (int)_maxPrice, _stock, _alpha, _recipe);
 	}
 }
