@@ -17,6 +17,9 @@ import ggc.products.Batch;
 import ggc.products.Product;
 import ggc.products.ComposedProduct;
 
+import java.text.Collator;
+import java.util.Locale;
+
 
 /**
  * Class Warehouse implements a warehouse.
@@ -32,14 +35,14 @@ public class Warehouse implements Serializable {
 	private int _date = 0;
 
 	/** Warehouse's partners */
-	private Map<String, Partner> _partners = new TreeMap<String, Partner>(String.CASE_INSENSITIVE_ORDER);
+	private Map<String, Partner> _partners = new TreeMap<String, Partner>(Collator.getInstance(Locale.ROOT));
 
 	/** Warehouse's batches */
-	private Map<String, Batch> _batches = new TreeMap<String, Batch>(String.CASE_INSENSITIVE_ORDER);
+	private Map<String, Batch> _batches = new TreeMap<String, Batch>(Collator.getInstance(Locale.ROOT)); // String.CASE_INSENSITIVE_ORDER
 
 	/** Warehouse's product */
-	private Map<String, Product> _products = new TreeMap<String, Product>(String.CASE_INSENSITIVE_ORDER);
-
+	private Map<String, Product> _products = new TreeMap<String, Product>(Collator.getInstance(Locale.ROOT));
+	
 	// FIXME define contructor(s)
 	// FIXME define methods
 
