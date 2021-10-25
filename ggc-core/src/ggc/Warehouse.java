@@ -173,7 +173,7 @@ public class Warehouse implements Serializable {
 			info += _partners.get(key).toString() + '\n';
 		}
 
-		return info.substring(0, info.length() - 1); // remove the last \n
+		return info; // remove the last \n
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class Warehouse implements Serializable {
 		}
 
 		Batch newBatch = new Batch(sID, pID, stock, price);
-		_batches.put(pID, newBatch);
+		_batches.put(pID + sID + price + stock, newBatch);
 	}
 
 	/**
@@ -222,7 +222,7 @@ public class Warehouse implements Serializable {
 		}
 
 		Batch newBatch = new Batch(sID, pID, stock, price);
-		_batches.put(pID, newBatch);
+		_batches.put(String.valueOf(_batches.size()), newBatch);
 	}
 
 	/**
@@ -277,7 +277,7 @@ public class Warehouse implements Serializable {
 			info += productInfo;
 		}
 
-		return info.substring(0, info.length() - 1); // remove the last \n
+		return info; // remove the last \n
 	}
 
 	/**
@@ -351,7 +351,7 @@ public class Warehouse implements Serializable {
 			}
 		}
 
-		return info.substring(0, info.length() - 1); // remove the last \n
+		return info; // remove the last \n
 	}
 
 }
