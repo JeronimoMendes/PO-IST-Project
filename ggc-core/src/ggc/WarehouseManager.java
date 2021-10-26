@@ -139,22 +139,42 @@ public class WarehouseManager {
 		return _warehouse.getPartner(partnerKey);
 	}
 
+	/**
+	 * returns a list of products in the form of a String
+	 * 
+	 * @return String representing a list of products
+	 */
 	public String listPartners() {
 		return _warehouse.listPartners();
 	}
 
 	/**
+	 * Registers a partner in the _warehouse
+	 */
+	public void registerPartner(String id, String name, String address) throws DuplicatePartnerException {
+		_warehouse.registerPartner(id, name, address);
+	}
+
+	/**
 	 * ############################### Product & Batches ###############################
+	 */
+
+	/**
+	 * returns a list of products in the form of a String
+	 * 
+	 * @return String representing a list of products
 	 */
 	public String listProducts() {
 		return _warehouse.listProducts();
 	}
 
+	/**
+	 * returns a list of batches in the form of a String
+	 * 
+	 * @return String representing a list of batches
+	 */
 	public String listAvailableBatches() {
 		return _warehouse.listAvailableBatches();
 	}
 
-	public void registerPartner(String id, String name, String address) throws DuplicatePartnerException {
-		_warehouse.registerPartner(id, name, address);
-	}
 }

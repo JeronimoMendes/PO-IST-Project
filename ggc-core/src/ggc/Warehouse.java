@@ -126,7 +126,7 @@ public class Warehouse implements Serializable {
 	 * 
 	 * 
 	*/
-	void registerPartner(String id, String name, String address) throws DuplicatePartnerException {
+	public void registerPartner(String id, String name, String address) throws DuplicatePartnerException {
 		if (checkPartner(id)) {
 			throw new DuplicatePartnerException(id);
 		}
@@ -142,7 +142,7 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @return info String with info about Partner
 	 */
-	String getPartner(String partnerKey) throws UnknownPartnerException {
+	public String getPartner(String partnerKey) throws UnknownPartnerException {
 		if (!checkPartner(partnerKey)) {
 			throw new UnknownPartnerException(partnerKey);
 		}
@@ -163,7 +163,7 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @return partners list of all the partners
 	 */
-	String listPartners() {
+	public String listPartners() {
 		String info = "";
 
 		for (String key: _partners.keySet()) {
@@ -176,7 +176,7 @@ public class Warehouse implements Serializable {
 	/**
 	 * Checks if a given partner's key corresponds to a registered partner
 	 */
-	boolean checkPartner(String partnerKey) {
+	public boolean checkPartner(String partnerKey) {
 		return _partners.containsKey(partnerKey);
 	}
 
@@ -194,7 +194,7 @@ public class Warehouse implements Serializable {
 	 * @param stock number of units that will be sold in the batch
 	 * @param price price of 1 unit of product
 	 */
-	void registerSimpleBatch(String sID, String pID, int stock, double price) {
+	public void registerSimpleBatch(String sID, String pID, int stock, double price) {
 		if (!productExists(pID)) {
 			registerProduct(pID);
 		}
@@ -213,7 +213,7 @@ public class Warehouse implements Serializable {
 	 * @param alpha number that multiplies the combined price of the ComposedProduct
 	 * @param recipe recipe for the ComposedProduct
 	 */
-	void registerComplexBatch(String sID, String pID, int stock, double price, double alpha, String recipe) {
+	public void registerComplexBatch(String sID, String pID, int stock, double price, double alpha, String recipe) {
 		if (!productExists(pID)) {
 			registerProduct(pID, alpha, recipe);
 		}
@@ -228,7 +228,7 @@ public class Warehouse implements Serializable {
 	 * @param pID Product's ID
 	 * @return boolean 
 	 */
-	boolean productExists(String pID) {
+	public boolean productExists(String pID) {
 		return _products.containsKey(pID);
 	}
 
@@ -237,7 +237,7 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @param pID Product's ID
 	 */
-	void registerProduct(String pID) {
+	public void registerProduct(String pID) {
 		Product newProduct = new Product(pID);
 		_products.put(pID, newProduct);
 	}
@@ -247,7 +247,7 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @param pID Product's ID
 	 */
-	void registerProduct(String pID, double alpha, String recipe) {
+	public void registerProduct(String pID, double alpha, String recipe) {
 		// TODO: parse the recipe
 
 		Product newProduct = new ComposedProduct(pID, alpha, recipe);
@@ -259,7 +259,7 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @return info String with info of all registered Products
 	 */
-	String listProducts() {
+	public String listProducts() {
 		String info = "";
 
 		for (String key: _products.keySet()) {
@@ -284,7 +284,7 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @return max maximum price of the given batches
 	 */
-	double getMaxPrice(List<Batch> batches) {
+	public double getMaxPrice(List<Batch> batches) {
 		double max = 0;
 		for (Batch batch: batches) {
 			if (batch.getPrice() > max) {
@@ -302,7 +302,7 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @return int stock
 	 */
-	int getStockOfProduct(List<Batch> batches) {
+	public int getStockOfProduct(List<Batch> batches) {
 		int stock = 0;
 		for (Batch batch: batches) {
 			stock += batch.getStock();
@@ -318,7 +318,7 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @return batches list of batches of the given product
 	 */
-	List<Batch> getBatchesOfProduct(Product product) {
+	public List<Batch> getBatchesOfProduct(Product product) {
 		List<Batch> batches = new ArrayList();
 
 		for (String key: _batches.keySet()) {
@@ -338,7 +338,7 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @return String info of all available batches
 	 */
-	String listAvailableBatches() {
+	public String listAvailableBatches() {
 		String info = "";
 
 		for (String key: _batches.keySet()) {
