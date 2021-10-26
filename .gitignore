@@ -5,3 +5,4 @@ input
 *.in
 *.out
 .vscode
+workspace.code-workspace
