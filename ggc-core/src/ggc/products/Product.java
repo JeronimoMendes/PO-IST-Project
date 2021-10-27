@@ -3,6 +3,8 @@ package ggc.products;
 import java.io.Serializable;
 
 public class Product implements Serializable {
+	private static final long serialVersionUID = 202110272100L;
+
 	/** Product's unique ID */
 	protected String _id;
 

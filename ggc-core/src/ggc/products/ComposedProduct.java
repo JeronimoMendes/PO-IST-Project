@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class ComposedProduct extends Product {
+	private static final long serialVersionUID = 202110272100L;
 	/** Recipe of products that composes this Composed Product */
 	private String _recipe;
 	

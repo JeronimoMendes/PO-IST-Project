@@ -24,7 +24,7 @@ import ggc.products.ComposedProduct;
 public class Warehouse implements Serializable {
 
 	/** Serial number for serialization. */
-	private static final long serialVersionUID = 202109192006L;
+	private static final long serialVersionUID = 202110272100L;
 
 	/** Warehouse's date */
 	private int _date = 0;

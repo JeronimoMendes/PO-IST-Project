@@ -8,6 +8,7 @@ import ggc.partners.status.EliteStatus;
 
 
 public class Partner implements Serializable {
+	private static final long serialVersionUID = 202110272100L;
 	/** Unique id of Partner */
 	private String _id;
 

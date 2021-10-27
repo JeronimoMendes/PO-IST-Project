@@ -5,6 +5,8 @@ package ggc.exceptions;
  * Thrown when date =< 0
  */
 public class InvalidDaysException extends Exception {
+	private static final long serialVersionUID = 202110272100L;
+
 	private int _days;
 
 	/**

@@ -5,6 +5,7 @@ package ggc.exceptions;
  * registered partner
  */
 public class UnknownPartnerException extends Exception {
+	private static final long serialVersionUID = 202110272100L;
 
 	/** The requested key. */
 	String _key;

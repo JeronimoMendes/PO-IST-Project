@@ -4,6 +4,7 @@ import ggc.partners.Partner;
 import java.io.Serializable;
 
 public class Batch implements Serializable {
+	private static final long serialVersionUID = 202110272100L;
 	/** Partner's ID that supplies the batch */
 	private String _supplier;
 
