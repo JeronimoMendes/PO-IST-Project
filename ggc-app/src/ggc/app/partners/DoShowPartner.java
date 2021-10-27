@@ -6,7 +6,6 @@ import ggc.WarehouseManager;
 
 import ggc.exceptions.UnknownPartnerException;
 import ggc.app.exceptions.UnknownPartnerKeyException;
-//FIXME import classes
 
 /**
  * Show partner.
@@ -15,7 +14,6 @@ class DoShowPartner extends Command<WarehouseManager> {
 
 	DoShowPartner(WarehouseManager receiver) {
 		super(Label.SHOW_PARTNER, receiver);
-		//FIXME add command fields
 		addStringField("partnerKey", Prompt.partnerKey());
 	}
 

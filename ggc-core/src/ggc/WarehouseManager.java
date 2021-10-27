@@ -13,9 +13,6 @@ import java.io.FileOutputStream;
 import ggc.exceptions.DuplicatePartnerException;
 
 
-
-//FIXME import classes (cannot import from pt.tecnico or ggc.app)
-
 /** Façade for access. */
 public class WarehouseManager {
 

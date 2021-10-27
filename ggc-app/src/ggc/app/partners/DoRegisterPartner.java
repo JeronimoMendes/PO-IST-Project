@@ -6,7 +6,6 @@ import ggc.WarehouseManager;
 
 import ggc.exceptions.DuplicatePartnerException;
 import ggc.app.exceptions.DuplicatePartnerKeyException;
-//FIXME import classes
 
 /**
  * Register new partner.

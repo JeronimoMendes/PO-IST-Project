@@ -26,8 +26,6 @@ public class Warehouse implements Serializable {
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202109192006L;
 
-	// FIXME define attributes
-
 	/** Warehouse's date */
 	private int _date = 0;
 
@@ -40,9 +38,6 @@ public class Warehouse implements Serializable {
 	/** Warehouse's product */
 	private Map<String, Product> _products = new TreeMap<String, Product>(new CollatorWrapper());
 	
-	// FIXME define contructor(s)
-	// FIXME define methods
-
 	/**
 	 * ########################################################################
 	 * ################################# File #################################
