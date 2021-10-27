@@ -77,13 +77,13 @@ public class Warehouse implements Serializable {
 		else if (simpleBatch.matcher(fields[0]).matches()) {
 			int stock = Integer.parseInt(fields[4]);
 			double price = Double.parseDouble(fields[3]);
-			registerSimpleBatch(fields[2], fields[1], stock, price);
+			registerBatch(fields[2], fields[1], stock, price);
 		}
 		else if (complexBatch.matcher(fields[0]).matches()) {
 			int stock = Integer.parseInt(fields[4]);
 			double price = Double.parseDouble(fields[3]);
 			double alpha = Double.parseDouble(fields[5]);
-			registerComplexBatch(fields[2], fields[1], stock, price, alpha, fields[6]);
+			registerBatch(fields[2], fields[1], stock, price, alpha, fields[6]);
 		}
 		else if (sale.matcher(fields[0]).matches()) {}
 		else if (buy.matcher(fields[0]).matches()) {}
@@ -189,10 +189,13 @@ public class Warehouse implements Serializable {
 	 * @param stock number of units that will be sold in the batch
 	 * @param price price of 1 unit of product
 	 */
-	public void registerSimpleBatch(String sID, String pID, int stock, double price) {
+	public void registerBatch(String sID, String pID, int stock, double price) {
 		if (!productExists(pID)) {
 			registerProduct(pID);
 		}
+
+		Product product = _products.get(pID);
+		product.update(price, stock);
 
 		Batch newBatch = new Batch(sID, pID, stock, price);
 		_batches.put(pID + sID + price + stock, newBatch);
@@ -208,10 +211,13 @@ public class Warehouse implements Serializable {
 	 * @param alpha number that multiplies the combined price of the ComposedProduct
 	 * @param recipe recipe for the ComposedProduct
 	 */
-	public void registerComplexBatch(String sID, String pID, int stock, double price, double alpha, String recipe) {
+	public void registerBatch(String sID, String pID, int stock, double price, double alpha, String recipe) {
 		if (!productExists(pID)) {
 			registerProduct(pID, alpha, recipe);
 		}
+		
+		Product product = _products.get(pID);
+		product.update(price, stock);
 
 		Batch newBatch = new Batch(sID, pID, stock, price);
 		_batches.put(String.valueOf(_batches.size()), newBatch);
@@ -260,50 +266,10 @@ public class Warehouse implements Serializable {
 		for (String key: _products.keySet()) {
 			Product product = _products.get(key);
 
-			List<Batch> batches = getBatchesOfProduct(product);
-			product.setMaxPrice(getMaxPrice(batches));
-			product.setStock(getStockOfProduct(batches));
-			
-			String productInfo = product.toString() + "\n";
-
-			info += productInfo;
+			info += product.toString() + "\n";
 		}
 
 		return info; // remove the last \n
-	}
-
-	/**
-	 * Returns maximum price of list of batches
-	 * 
-	 * @param batches List of batches to iterate
-	 * 
-	 * @return max maximum price of the given batches
-	 */
-	public double getMaxPrice(List<Batch> batches) {
-		double max = 0;
-		for (Batch batch: batches) {
-			if (batch.getPrice() > max) {
-				max = batch.getPrice();
-			}
-		}
-		
-		return max;
-	}
-
-	/**
-	 * Returns the stock of a product in a given list of batches
-	 * 
-	 * @param batches List of batches
-	 * 
-	 * @return int stock
-	 */
-	public int getStockOfProduct(List<Batch> batches) {
-		int stock = 0;
-		for (Batch batch: batches) {
-			stock += batch.getStock();
-		}
-		
-		return stock;
 	}
 
 	/**

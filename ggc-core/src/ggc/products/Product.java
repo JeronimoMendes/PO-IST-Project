@@ -29,6 +29,21 @@ public class Product implements Serializable {
 
 	public void setStock(int newStock) { _stock = newStock; }
 
+	/**
+	 * This function updates the stock and price.
+	 * If the price given is higher then maxPrice, maxPrice will be updated.
+	 * Stock will be incremented by the given stock change.
+	 * 
+	 * @param price price at which the product is being sold
+	 * @param stock new amount of product being sold
+	 */
+	public void update(double price, int stock) {
+		if (_maxPrice < price) {
+			_maxPrice = price;
+		}
+		_stock += stock;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%s|%d|%d", _id, (int)_maxPrice, _stock);
