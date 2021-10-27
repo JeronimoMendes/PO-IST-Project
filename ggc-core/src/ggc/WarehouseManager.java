@@ -22,14 +22,11 @@ public class WarehouseManager {
 	/** Name of file storing current store. */
 	public String _filename = "";
 
-
 	/** The warehouse itself. */
 	private Warehouse _warehouse = new Warehouse();
 
-	//FIXME define other attributes
-	//FIXME define constructor(s)
-	//FIXME define other methods
-
+	/** A flag to keep track if the warehouse changed */
+	private boolean _changed = true;
 
 	/**
 	 * ################################# File #################################
@@ -41,12 +38,16 @@ public class WarehouseManager {
 	 * @@throws MissingFileAssociationException
 	 */
 	public void save() throws IOException, MissingFileAssociationException {
-		try {
-			ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(_filename)));
-			output.writeObject(_warehouse);
-			output.close();
-		} catch(IOException e) {
-			throw new MissingFileAssociationException();
+		// We only want to save if the warehouse has changed
+		if (_changed) {
+			try {
+				ObjectOutputStream output = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(_filename)));
+				output.writeObject(_warehouse);
+				output.close();
+				_changed = false;
+			} catch(IOException e) {
+				throw new MissingFileAssociationException();
+			}
 		}
 	}
 
@@ -121,6 +122,7 @@ public class WarehouseManager {
 	 * @throws InvalidDaysException number of days was negative or null
 	 */
 	public void advanceDate(int days) throws InvalidDaysException{
+		_changed = true;
 		_warehouse.advanceDate(days);
 	}
 
@@ -152,6 +154,7 @@ public class WarehouseManager {
 	 * Registers a partner in the _warehouse
 	 */
 	public void registerPartner(String id, String name, String address) throws DuplicatePartnerException {
+		_changed = true;
 		_warehouse.registerPartner(id, name, address);
 	}
 
