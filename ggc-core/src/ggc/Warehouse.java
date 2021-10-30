@@ -17,6 +17,8 @@ import ggc.products.Batch;
 import ggc.products.Product;
 import ggc.products.ComposedProduct;
 
+import java.util.Collections;
+
 
 /**
  * Class Warehouse implements a warehouse.
@@ -33,7 +35,7 @@ public class Warehouse implements Serializable {
 	private Map<String, Partner> _partners = new TreeMap<String, Partner>(new CollatorWrapper());
 
 	/** Warehouse's batches */
-	private Map<String, Batch> _batches = new TreeMap<String, Batch>(new CollatorWrapper());
+	private List<Batch> _batches = new ArrayList<Batch>();
 
 	/** Warehouse's product */
 	private Map<String, Product> _products = new TreeMap<String, Product>(new CollatorWrapper());
@@ -198,7 +200,7 @@ public class Warehouse implements Serializable {
 		product.update(price, stock);
 
 		Batch newBatch = new Batch(sID, pID, stock, price);
-		_batches.put(pID + sID + price + stock, newBatch);
+		_batches.add(newBatch);
 	}
 
 	/**
@@ -220,7 +222,7 @@ public class Warehouse implements Serializable {
 		product.update(price, stock);
 
 		Batch newBatch = new Batch(sID, pID, stock, price);
-		_batches.put(String.valueOf(_batches.size()), newBatch);
+		_batches.add(newBatch);
 	}
 
 	/**
@@ -282,8 +284,8 @@ public class Warehouse implements Serializable {
 	public List<Batch> getBatchesOfProduct(Product product) {
 		List<Batch> batches = new ArrayList();
 
-		for (String key: _batches.keySet()) {
-			Batch batch = _batches.get(key);
+		Collections.sort(_batches);
+		for (Batch batch: _batches) {
 			Product batchProduct = _products.get(batch.getProduct());
 
 			if (batchProduct.equals(product)) {
@@ -302,8 +304,8 @@ public class Warehouse implements Serializable {
 	public String listAvailableBatches() {
 		String info = "";
 
-		for (String key: _batches.keySet()) {
-			Batch batch = _batches.get(key);
+		Collections.sort(_batches);
+		for (Batch batch: _batches) {
 			if (batch.getStock() > 0) {
 				info += batch.toString() + '\n';
 			}

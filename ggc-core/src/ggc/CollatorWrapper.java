@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 
-class CollatorWrapper implements Comparator<String>, Serializable {
+public class CollatorWrapper implements Comparator<String>, Serializable {
 	private static final long serialVersionUID = 202110251850L;
 
 	private transient Collator _collator = Collator.getInstance(Locale.getDefault());

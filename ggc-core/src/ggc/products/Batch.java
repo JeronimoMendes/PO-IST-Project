@@ -3,7 +3,9 @@ package ggc.products;
 import ggc.partners.Partner;
 import java.io.Serializable;
 
-public class Batch implements Serializable {
+import ggc.CollatorWrapper;
+
+public class Batch implements Serializable, Comparable<Batch> {
 	private static final long serialVersionUID = 202110272100L;
 	/** Partner's ID that supplies the batch */
 	private String _supplier;
@@ -75,4 +77,17 @@ public class Batch implements Serializable {
 		return String.format("%s|%s|%d|%d", _product, _supplier, (int)_price, _stock);
 	}
 
+	@Override
+	public int compareTo(Batch other) {
+		CollatorWrapper col = new CollatorWrapper();
+
+		if (col.compare(_product, other.getProduct()) != 0)
+			return (col.compare(_product, other.getProduct()));
+		if (col.compare(_supplier, other.getSupplier()) != 0)
+			return (col.compare(_supplier, other.getSupplier()));
+		if (_price != other.getPrice())
+			return ((_price - other.getPrice()) > 0) ? 1 : -1;
+		
+		return _stock - other.getStock();
+	}
 }
