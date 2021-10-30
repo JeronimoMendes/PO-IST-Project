@@ -6,8 +6,15 @@ import ggc.partners.status.NormalStatus;
 import ggc.partners.status.SelectionStatus;
 import ggc.partners.status.EliteStatus;
 
+import ggc.partners.notifications.Notification;
+import ggc.partners.notifications.NotificationMode;
+import ggc.partners.notifications.Default;
 
-public class Partner implements Serializable {
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Partner implements Observer {
 	private static final long serialVersionUID = 202110272100L;
 	/** Unique id of Partner */
 	private String _id;
@@ -33,6 +40,12 @@ public class Partner implements Serializable {
 	/** Total value of sales paid */
 	private double _salesPaidValue = 0;
 
+	/** List of notifications */
+	private List<Notification> _notifications = new ArrayList<Notification>();
+
+	/** Partner's prefered notification mode */
+	private NotificationMode _notificationMode = new Default();
+
 	/**
 	 * Partner's main constructor
 	 * 
@@ -47,6 +60,11 @@ public class Partner implements Serializable {
 		_id = id;
 		_name = name;
 		_address = address;
+	}
+
+	@Override
+	public void update(String event, String pID) {
+		_notifications.add(_notificationMode.notify(event, pID));
 	}
 
 	@Override

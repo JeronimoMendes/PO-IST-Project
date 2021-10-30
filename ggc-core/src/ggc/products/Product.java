@@ -1,8 +1,12 @@
 package ggc.products;
 
 import java.io.Serializable;
+import ggc.partners.Observer;
 
-public class Product implements Serializable {
+import java.util.Map;
+import java.util.HashMap;
+
+public class Product implements Observable {
 	private static final long serialVersionUID = 202110272100L;
 
 	/** Product's unique ID */
@@ -13,6 +17,9 @@ public class Product implements Serializable {
 
 	/** Product's stock */
 	protected int _stock;
+
+	/** Observers that will be notified when this Product is updated */
+	private Map<Observer, Boolean> _observers = new HashMap<Observer, Boolean>();
 
 	/**
 	 * Main constructor
@@ -44,6 +51,25 @@ public class Product implements Serializable {
 			_maxPrice = price;
 		}
 		_stock += stock;
+	}
+
+	@Override
+	public void registerObserver(Observer observer) {
+		_observers.put(observer, true);
+	}
+
+	@Override
+	public void removeObserver(Observer observer) {
+		_observers.put(observer, false);
+	}
+
+	@Override
+	public void notifyObservers(String event) {
+		for (Map.Entry<Observer, Boolean> observer : _observers.entrySet()) {
+			if (observer.getValue()) {
+				observer.getKey().update(event, _id);
+			}
+		}
 	}
 
 	@Override
