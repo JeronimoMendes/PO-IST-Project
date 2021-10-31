@@ -25,6 +25,6 @@ public class ComposedProduct extends Product {
 
 	@Override
 	public String toString() {
-		return String.format(Locale.US, "%s|%d|%d|%.1f|%s", _id, (int)_maxPrice, _stock, _alpha, _recipe);
+		return String.format(Locale.US, "%s|%d|%d|%.1f|%s", getID(), (int)getMaxPrice(), getStock(), _alpha, _recipe);
 	}
 }

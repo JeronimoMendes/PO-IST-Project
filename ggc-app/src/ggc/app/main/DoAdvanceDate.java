@@ -12,9 +12,6 @@ import ggc.exceptions.InvalidDaysException;
  */
 class DoAdvanceDate extends Command<WarehouseManager> {
 	
-	/** Number of days to advance */
-	private int _days;
-
 	DoAdvanceDate(WarehouseManager receiver) {
 		super(Label.ADVANCE_DATE, receiver);
 		addIntegerField("date", Prompt.daysToAdvance());
@@ -22,12 +19,9 @@ class DoAdvanceDate extends Command<WarehouseManager> {
 
 	@Override
 	public final void execute() throws CommandException {
-		// Fetch days from Form
-		_days = integerField("date");
-
 		try {
 			// Execute command on WarehouseManager
-			_receiver.advanceDate(_days);
+			_receiver.advanceDate(integerField("date"));
 		} catch (InvalidDaysException e) {
 			throw new InvalidDateException(e.getDays());
 		}

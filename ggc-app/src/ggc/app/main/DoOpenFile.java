@@ -11,9 +11,6 @@ import ggc.exceptions.UnavailableFileException;
  */
 class DoOpenFile extends Command<WarehouseManager> {
 
-	/** File's name to load */
-	private String _filename;
-
 	/** @param receiver */
 	DoOpenFile(WarehouseManager receiver) {
 		super(Label.OPEN, receiver);
@@ -24,8 +21,7 @@ class DoOpenFile extends Command<WarehouseManager> {
 	public final void execute() throws CommandException {
 		
 		try {
-			_filename = stringField("filename");
-			_receiver.load(_filename);
+			_receiver.load(stringField("filename"));
 		} catch (UnavailableFileException ufe) {
 			throw new FileOpenFailedException(ufe.getFilename());
 		}

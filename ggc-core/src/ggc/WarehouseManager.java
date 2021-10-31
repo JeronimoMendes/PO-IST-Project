@@ -17,7 +17,7 @@ import ggc.exceptions.DuplicatePartnerException;
 public class WarehouseManager {
 
 	/** Name of file storing current store. */
-	public String _filename = "";
+	private String _filename = "";
 
 	/** The warehouse itself. */
 	private Warehouse _warehouse = new Warehouse();

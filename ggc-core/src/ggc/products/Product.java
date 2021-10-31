@@ -10,13 +10,13 @@ public class Product implements Observable {
 	private static final long serialVersionUID = 202110272100L;
 
 	/** Product's unique ID */
-	protected String _id;
+	private String _id;
 
 	/** Product's max price */
-	protected double _maxPrice;
+	private double _maxPrice;
 
 	/** Product's stock */
-	protected int _stock;
+	private int _stock;
 
 	/** Observers that will be notified when this Product is updated */
 	private Map<Observer, Boolean> _observers = new HashMap<Observer, Boolean>();
