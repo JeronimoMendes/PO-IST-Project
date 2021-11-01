@@ -285,7 +285,7 @@ public class Warehouse implements Serializable {
 	/**
 	 * Returns an array of batchs of a given Product
 	 * 
-	 * @param product Product to filter the array of batchs
+	 * @param pID Product's ID to filter the array of batchs
 	 * 
 	 * @return batches list of batches of the given product
 	 */
@@ -295,6 +295,24 @@ public class Warehouse implements Serializable {
 		}
 
 		List<Batch> list = _batches.stream().filter(batch -> batch.getProduct().equals(pID))
+											.collect(Collectors.toList());
+
+		return getStrOfBatches(list);
+	}
+
+	/**
+	 * Returns an array of batchs of a given Partner
+	 * 
+	 * @param pID Partner's ID to filter the array of batchs
+	 * 
+	 * @return batches list of batches of the given Partner
+	 */
+	public String getBatchesOfPartner(String pID) throws UnknownPartnerException {
+		if (!checkPartner(pID)) {
+			throw new UnknownPartnerException(pID);
+		}
+
+		List<Batch> list = _batches.stream().filter(batch -> batch.getSupplier().equals(pID))
 											.collect(Collectors.toList());
 
 		return getStrOfBatches(list);
