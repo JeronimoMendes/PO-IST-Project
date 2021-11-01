@@ -1,10 +1,10 @@
 package ggc.exceptions;
 
 /**
- * Exception thrown when a given partner's key doesn't corresponde to a 
- * registered partner
+ * Exception thrown when a given product's key doesn't corresponde to a 
+ * registered product
  */
-public class UnknownPartnerException extends Exception {
+public class UnknownProductException extends Exception {
 	private static final long serialVersionUID = 202110272100L;
 
 	/** The requested key. */
@@ -13,7 +13,7 @@ public class UnknownPartnerException extends Exception {
 	/**
 	 * @param key 
 	 */
-	public UnknownPartnerException(String key) {
+	public UnknownProductException(String key) {
 	  _key = key;
 	}
 
@@ -23,5 +23,4 @@ public class UnknownPartnerException extends Exception {
 	public String getKey() {
 		return _key;
 	}
-
 }

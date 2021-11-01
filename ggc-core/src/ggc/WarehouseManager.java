@@ -177,4 +177,15 @@ public class WarehouseManager {
 		return _warehouse.listAvailableBatches();
 	}
 
+	/**
+	 * returns a String representation of a list o batches of a particular product
+	 * 
+	 * @param pID Product's ID
+	 * 
+	 * @return String representing a list of batches
+	 */
+	public String getBatchesOfProduct(String pID) throws UnknownProductException {
+		return _warehouse.getBatchesOfProduct(pID);
+	}
+
 }

@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ggc.partners.Partner;
 import ggc.products.Batch;
@@ -184,6 +185,13 @@ public class Warehouse implements Serializable {
 	 */
 
 	/**
+	 * Checks if a given product's key corresponds to a registered product
+	 */
+	public boolean checkProduct(String pID) {
+		return _products.containsKey(pID);
+	}
+
+	/**
 	 * Registers a new Batch composed of a simple Product
 	 * 
 	 * @param sID Supplier's string ID
@@ -281,19 +289,15 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @return batches list of batches of the given product
 	 */
-	public List<Batch> getBatchesOfProduct(Product product) {
-		List<Batch> batches = new ArrayList();
-
-		Collections.sort(_batches);
-		for (Batch batch: _batches) {
-			Product batchProduct = _products.get(batch.getProduct());
-
-			if (batchProduct.equals(product)) {
-				batches.add(batch);
-			}
+	public String getBatchesOfProduct(String pID) throws UnknownProductException {
+		if (!checkProduct(pID)) {
+			throw new UnknownProductException(pID);
 		}
 
-		return batches;
+		List<Batch> list = _batches.stream().filter(batch -> batch.getProduct().equals(pID))
+											.collect(Collectors.toList());
+
+		return getStrOfBatches(list);
 	}
 
 	/**
@@ -302,16 +306,25 @@ public class Warehouse implements Serializable {
 	 * @return String info of all available batches
 	 */
 	public String listAvailableBatches() {
+		return getStrOfBatches(_batches); // remove the last \n
+	}
+
+	/**
+	 * This function returns the String representation of a list of Batch
+	 * 
+	 * @param batches List of Batch
+	 * 
+	 * @return info String representation of the list of Batch
+	 */
+	public String getStrOfBatches(List<Batch> batches) {
 		String info = "";
 
-		Collections.sort(_batches);
-		for (Batch batch: _batches) {
-			if (batch.getStock() > 0) {
-				info += batch.toString() + '\n';
-			}
+		Collections.sort(batches);
+		for(Batch batch: batches) {
+			info += batch.toString() + '\n';
 		}
 
-		return info; // remove the last \n
+		return info;
 	}
 
 }
