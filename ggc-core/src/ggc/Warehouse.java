@@ -319,11 +319,11 @@ public class Warehouse implements Serializable {
 	}
 
 	/**
-	 * Returns an array of batchs of a given Partner
+	 * Returns an array of batchs under a given price
 	 * 
 	 * @param pID Partner's ID to filter the array of batchs
 	 * 
-	 * @return batches list of batches of the given Partner
+	 * @return batches list of batches under the given price
 	 */
 	public String getBatchesUnderPrice(int price) {
 		List<Batch> list = _batches.stream().filter(batch -> batch.getPrice() < price)
