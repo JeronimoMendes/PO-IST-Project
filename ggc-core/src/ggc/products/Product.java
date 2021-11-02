@@ -5,6 +5,7 @@ import ggc.partners.Observer;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 
 public class Product implements Observable {
 	private static final long serialVersionUID = 202110272100L;
@@ -24,8 +25,10 @@ public class Product implements Observable {
 	/**
 	 * Main constructor
 	 */
-	public Product(String id){
+	public Product(String id, List<Observer> observers) {
 		_id = id;
+		for (Observer obs: observers)
+			_observers.put(obs, true);
 	}
 
 	public String getID() { return _id; }
@@ -45,12 +48,17 @@ public class Product implements Observable {
 	 * 
 	 * @param price price at which the product is being sold
 	 * @param stock new amount of product being sold
+	 * @param importing if the update is done when importing a file
 	 */
-	public void update(double price, int stock) {
+	public void update(double price, int stock, boolean importing) {
 		if (_maxPrice < price) {
 			_maxPrice = price;
+			if (!importing) 
+				notifyObservers(String.format("BARGAIN|%s|%s", _id, (int)price));
 		}
 		_stock += stock;
+		if (!importing && stock == _stock)
+			notifyObservers(String.format("NEW|%s|%s", _id, (int)price));
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package ggc.products;
 
+import ggc.partners.Observer;
+
 import java.util.Map;
 import java.util.List;
 
@@ -17,8 +19,8 @@ public class ComposedProduct extends Product {
 	/**
 	 * Main constructor
 	 */
-	public ComposedProduct(String id, double alpha, String recipe) {
-		super(id);
+	public ComposedProduct(String id, List<Observer> observers, double alpha, String recipe) {
+		super(id, observers);
 		_recipe = recipe;
 		_alpha = alpha;
 	}

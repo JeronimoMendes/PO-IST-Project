@@ -67,6 +67,18 @@ public class Partner implements Observer {
 		_notifications.add(_notificationMode.notify(event, pID));
 	}
 
+	public String showPartner() {
+		String res = toString() + '\n';
+
+		for (Notification notification: _notifications) {
+			res += notification.toString() + '\n';
+		}
+
+		_notifications.clear();
+
+		return res;
+	}
+
 	@Override
 	public String toString() {
 		String res = String.format(
@@ -75,6 +87,7 @@ public class Partner implements Observer {
 			_status.toString(), _score,
 			(int)_accquisitionsValue, (int)_salesValue, (int)_salesPaidValue
 		);
+
 		return res;
 	}
 }

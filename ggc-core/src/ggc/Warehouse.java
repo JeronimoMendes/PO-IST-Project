@@ -17,6 +17,7 @@ import ggc.partners.Partner;
 import ggc.products.Batch;
 import ggc.products.Product;
 import ggc.products.ComposedProduct;
+import ggc.partners.Observer;
 
 import java.util.Collections;
 
@@ -149,7 +150,7 @@ public class Warehouse implements Serializable {
 
 		Partner partner = _partners.get(partnerKey);
 
-		info += partner.toString(); // + "\n";\
+		info += partner.showPartner(); // + "\n";\
 
 		// TODO: Include partner's notifications
 
@@ -205,7 +206,7 @@ public class Warehouse implements Serializable {
 		}
 
 		Product product = _products.get(pID);
-		product.update(price, stock);
+		product.update(price, stock, true);
 
 		Batch newBatch = new Batch(sID, pID, stock, price);
 		_batches.add(newBatch);
@@ -227,7 +228,7 @@ public class Warehouse implements Serializable {
 		}
 		
 		Product product = _products.get(pID);
-		product.update(price, stock);
+		product.update(price, stock, true);
 
 		Batch newBatch = new Batch(sID, pID, stock, price);
 		_batches.add(newBatch);
@@ -249,7 +250,7 @@ public class Warehouse implements Serializable {
 	 * @param pID Product's ID
 	 */
 	public void registerProduct(String pID) {
-		Product newProduct = new Product(pID);
+		Product newProduct = new Product(pID, new ArrayList<Observer>(_partners.values()));
 		_products.put(pID, newProduct);
 	}
 
@@ -261,7 +262,7 @@ public class Warehouse implements Serializable {
 	public void registerProduct(String pID, double alpha, String recipe) {
 		// TODO: parse the recipe
 
-		Product newProduct = new ComposedProduct(pID, alpha, recipe);
+		Product newProduct = new ComposedProduct(pID, new ArrayList<Observer>(_partners.values()), alpha, recipe);
 		_products.put(pID, newProduct);
 	}
 

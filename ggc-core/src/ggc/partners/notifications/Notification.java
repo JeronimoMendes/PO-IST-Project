@@ -10,4 +10,9 @@ public class Notification implements Serializable {
 		_event = event;
 		_pID = pID;
 	}
+
+	@Override
+	public String toString() {
+		return _event;
+	}
 }
