@@ -178,7 +178,7 @@ public class WarehouseManager {
 	}
 
 	/**
-	 * returns a String representation of a list o batches of a particular product
+	 * returns a String representation of a list of batches of a particular product
 	 * 
 	 * @param pID Product's ID
 	 * 
@@ -189,7 +189,7 @@ public class WarehouseManager {
 	}
 
 	/**
-	 * returns a String representation of a list o batches of a particular Partner
+	 * returns a String representation of a list of batches of a particular Partner
 	 * 
 	 * @param pID Partner's ID
 	 * 
@@ -197,6 +197,17 @@ public class WarehouseManager {
 	 */
 	public String getBatchesOfPartner(String pID) throws UnknownPartnerException {
 		return _warehouse.getBatchesOfPartner(pID);
+	}
+
+	/**
+	 * returns a String representation of a list of batches under a certain price
+	 * 
+	 * @param pID Partner's ID
+	 * 
+	 * @return String representing a list of batches
+	 */
+	public String getBatchesUnderPrice(int price) {
+		return _warehouse.getBatchesUnderPrice(price);
 	}
 
 }
