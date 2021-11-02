@@ -156,6 +156,17 @@ public class WarehouseManager {
 	}
 
 	/**
+	 * Toggles product notifications of partner
+	 * 
+	 * @param partnerID partner's ID
+	 * @param productID product's ID
+	 */
+	public void toggleNotifications(String partnerID, String productID)
+			throws UnknownPartnerException, UnknownProductException {
+		_warehouse.toggleNotifications(partnerID, productID);
+	}
+
+	/**
 	 * ############################### Product & Batches ###############################
 	 */
 

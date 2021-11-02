@@ -176,6 +176,27 @@ public class Warehouse implements Serializable {
 	}
 
 	/**
+	 * Toggles product notifications of partner
+	 * 
+	 * @param partnerID partner's ID
+	 * @param productID product's ID
+	 */
+	public void toggleNotifications(String partnerID, String productID)
+				throws UnknownPartnerException, UnknownProductException {
+		if (!checkPartner(partnerID)) {
+			throw new UnknownPartnerException(partnerID);
+		}
+		if (!checkProduct(productID)) {
+			throw new UnknownProductException(productID);
+		}
+
+		Product product = _products.get(productID);
+		Partner partner = _partners.get(partnerID);
+
+		product.removeObserver(partner);
+	}
+
+	/**
 	 * Checks if a given partner's key corresponds to a registered partner
 	 */
 	public boolean checkPartner(String partnerKey) {
