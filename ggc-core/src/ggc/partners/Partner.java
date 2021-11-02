@@ -74,6 +74,9 @@ public class Partner implements Observer {
 			res += notification.toString() + '\n';
 		}
 
+		if (res.length() > 0)
+			res = res.substring(0, res.length() - 1);
+
 		_notifications.clear();
 
 		return res;

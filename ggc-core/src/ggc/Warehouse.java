@@ -169,6 +169,9 @@ public class Warehouse implements Serializable {
 			info += _partners.get(key).toString() + '\n';
 		}
 
+		if (info.length() > 0)
+			info = info.substring(0, info.length() - 1);
+
 		return info; // remove the last \n
 	}
 
@@ -280,6 +283,9 @@ public class Warehouse implements Serializable {
 			info += product.toString() + "\n";
 		}
 
+		if (info.length() > 0)
+			info = info.substring(0, info.length() - 1);
+
 		return info; // remove the last \n
 	}
 
@@ -356,6 +362,9 @@ public class Warehouse implements Serializable {
 		for(Batch batch: batches) {
 			info += batch.toString() + '\n';
 		}
+
+		if (info.length() > 0)
+			info = info.substring(0, info.length() - 1);
 
 		return info;
 	}
