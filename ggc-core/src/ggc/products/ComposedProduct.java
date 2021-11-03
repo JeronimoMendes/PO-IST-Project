@@ -21,12 +21,13 @@ public class ComposedProduct extends Product {
 	 */
 	public ComposedProduct(String id, List<Observer> observers, double alpha, String recipe) {
 		super(id, observers);
+		Recipe newRecipe = new Recipe(recipe);
 		_recipe = recipe;
 		_alpha = alpha;
 	}
 
 	@Override
 	public String toString() {
-		return String.format(Locale.US, "%s|%d|%d|%s|%s", getID(), (int)getMaxPrice(), getStock(), _alpha, _recipe);
+		return String.format(Locale.US, "%s|%d|%d|%s|%s", getID(), (int)getMaxPrice(), getStock(), _alpha, _recipe.toString());
 	}
 }
