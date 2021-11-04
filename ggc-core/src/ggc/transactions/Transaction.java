@@ -1,11 +1,11 @@
 package ggc.transactions;
 
-import java.io.Serializable;
+import ggc.util.Visitable;
 
 import ggc.partners.Partner;
 import ggc.products.Product;
 
-public abstract class Transaction implements Serializable {
+public abstract class Transaction implements Visitable {
 	/** Transaction's ID */
 	private String _id;
 

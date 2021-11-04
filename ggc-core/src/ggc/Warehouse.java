@@ -115,6 +115,17 @@ public class Warehouse implements Serializable {
 	}
 
 	/**
+	 * Returns the budget of the warehouse
+	 * 
+	 * @return Warehouse's _budget
+	 */
+	/* TODO:
+	public double getBudget() {
+		return _budget;
+	}
+	*/
+
+	/**
 	 * ########################################################################
 	 * ############################### Partners ###############################
 	 * ########################################################################

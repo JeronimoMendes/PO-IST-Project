@@ -1,7 +1,17 @@
 package ggc.transactions;
 
-import java.io.Serializable;
+import ggc.util.Visitor;
 
-public class Accquisition implements Serializable {
-	
+public class Accquisition extends Transaction {
+	public Accquisition(String id) {
+		super(id);
+	}
+
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
+	}
+
+	@Override
+	public void pay() {}
 }

@@ -124,6 +124,17 @@ public class WarehouseManager {
 	}
 
 	/**
+	 * Returns the budget of the warehouse
+	 * 
+	 * @return Warehouse's _budget
+	 */
+	/* TODO:
+	public double getBudget() {
+		return _warehouse.getBudget();
+	}  
+	*/
+
+	/**
 	 *  ###############################* Partners ###############################*
 	 */
 

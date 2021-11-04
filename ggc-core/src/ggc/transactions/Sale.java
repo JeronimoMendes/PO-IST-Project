@@ -1,7 +1,17 @@
 package ggc.transactions;
 
-import java.io.Serializable;
+import ggc.util.Visitor;
 
-public class Sale implements Serializable {
-	
+public class Sale extends Transaction {
+	public Sale(String id) {
+		super(id);
+	}
+
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
+	}
+
+	@Override
+	public void pay() {}
 }
