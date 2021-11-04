@@ -10,4 +10,5 @@ public interface Visitor extends Serializable {
 	void visit(Sale sale);
 	void visit(Accquisition accq);
 	void visit(Breakdown breakdown);
+	double getBudget();
 }

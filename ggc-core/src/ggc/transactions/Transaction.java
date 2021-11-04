@@ -25,10 +25,18 @@ public abstract class Transaction implements Visitable {
 	private int _paymentDate;
 
 	/** Base value of the transaction */
-	private double baseValue;
+	private double _baseValue;
 
 	public Transaction(String id) {
 		_id = id;
+	}
+
+	public double getBaseValue() {
+		return _baseValue;
+	}
+
+	public boolean isPaid() {
+		return _paid;
 	}
 
 	public abstract void pay();

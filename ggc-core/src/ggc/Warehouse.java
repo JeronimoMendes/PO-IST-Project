@@ -18,6 +18,11 @@ import ggc.products.Batch;
 import ggc.products.Product;
 import ggc.products.ComposedProduct;
 import ggc.partners.Observer;
+import ggc.transactions.Transaction;
+import ggc.util.AccountingBudget;
+import ggc.util.ReadyBudget;
+import ggc.transactions.Transaction;
+import ggc.util.Visitor;
 
 import java.util.Collections;
 
@@ -41,6 +46,9 @@ public class Warehouse implements Serializable {
 
 	/** Warehouse's product */
 	private Map<String, Product> _products = new TreeMap<String, Product>(new CollatorWrapper());
+
+	/** Map tree of transactions */
+	private Map<Integer, Transaction> _transactions = new TreeMap<Integer, Transaction>();
 	
 	/**
 	 * ########################################################################
@@ -115,15 +123,35 @@ public class Warehouse implements Serializable {
 	}
 
 	/**
-	 * Returns the budget of the warehouse
+	 * Returns the ready budget of the warehouse
 	 * 
-	 * @return Warehouse's _budget
+	 * @return Warehouse's ready budget
 	 */
-	/* TODO:
-	public double getBudget() {
-		return _budget;
+	public double getReadyBudget() {
+		Visitor visitor = new ReadyBudget();
+		visitTransactions(visitor);
+		return visitor.getBudget();
 	}
-	*/
+
+	/**
+	 * Returns the accounting budget of the warehouse
+	 * 
+	 * @return Warehouse's accounting budget
+	 */
+	public double getAccountingBudget() {
+		Visitor visitor = new AccountingBudget();
+		visitTransactions(visitor);
+		return visitor.getBudget();
+	}
+
+	/**
+	 * Visits the transactions with a visitor
+	 */
+	public void visitTransactions(Visitor visitor) {
+		for (Transaction t: _transactions.values())
+			t.accept(visitor);
+	}
+
 
 	/**
 	 * ########################################################################

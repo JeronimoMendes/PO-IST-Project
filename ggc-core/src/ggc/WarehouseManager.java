@@ -124,15 +124,23 @@ public class WarehouseManager {
 	}
 
 	/**
-	 * Returns the budget of the warehouse
+	 * Returns the accounting budget of the warehouse
 	 * 
-	 * @return Warehouse's _budget
+	 * @return Warehouse's accounting budget
 	 */
-	/* TODO:
-	public double getBudget() {
-		return _warehouse.getBudget();
+	public double getAccountingBudget() {
+		return _warehouse.getAccountingBudget();
 	}  
-	*/
+
+	/**
+	 * Returns the ready budget of the warehouse
+	 * 
+	 * @return Warehouse's ready budget
+	 */
+	public double getReadyBudget() {
+		return _warehouse.getReadyBudget();
+	}  
+	
 
 	/**
 	 *  ###############################* Partners ###############################*
