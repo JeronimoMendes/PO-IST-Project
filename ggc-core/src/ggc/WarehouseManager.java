@@ -254,4 +254,15 @@ public class WarehouseManager {
 		throws UnknownPartnerException, UnknownProductException {
 		_warehouse.registerAcquisition(productID, partnerID, price, amount);
 	}
+
+	/**
+	 * returns a String representation of a transaction
+	 * 
+	 * @param tID Transaction's ID
+	 * 
+	 * @return String representing a transaction
+	 */
+	public String getTransacation(int tID) throws UnknownTransactionException {
+		return _warehouse.getTransacation(tID);
+	}
 }

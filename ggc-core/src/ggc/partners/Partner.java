@@ -62,6 +62,10 @@ public class Partner implements Observer {
 		_address = address;
 	}
 
+	public String getID() {
+		return _id;
+	}
+
 	@Override
 	public void update(String event, String pID) {
 		_notifications.add(_notificationMode.notify(event, pID));

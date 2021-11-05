@@ -42,14 +42,35 @@ public abstract class Transaction implements Visitable {
 	public boolean isPaid() {
 		return _paid;
 	}
+	
+	public void setPaid(boolean paid) {
+		_paid = paid;
+	}
 
 	public void setPaymentDate(int date) {
 		_paymentDate = date;
 	}
 
-	public void setPaid(boolean paid) {
-		_paid = paid;
+	public int getPaymentDate() {
+		return _paymentDate;
 	}
+
+	public Partner getPartner() {
+		return _partner;
+	}
+
+	public Product getProduct() {
+		return _product;
+	}
+
+	public int getQuantity() {
+		return _quantity;
+	}
+
+	public int getID() {
+		return _id;
+	}
+
 
 	public abstract void pay();
 }

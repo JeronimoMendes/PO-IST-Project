@@ -39,7 +39,7 @@ public class DoRegisterAcquisitionTransaction extends Command<WarehouseManager> 
 			_receiver.registerAcquisition(product, partner, price, amount);
 		} catch (UnknownProductException e) {
 			/*
-			if (Form.requestString(Prompt.addRecipe()).compare("Sim")) {
+			if (Form.confirm(Prompt.addRecipe())) {
 				String recipe = Form.requestString(Prompt.numberOfComponents());
 				double alpha = Form.requestReal(Prompt.alpha());
 				Strign id = Form.requestString(Prompt.productKey());
@@ -47,7 +47,7 @@ public class DoRegisterAcquisitionTransaction extends Command<WarehouseManager> 
 				_receiver.registerAcquisition(id, partner, price, amount)
 			}
 			_receiver.registerAcquisition(product, partner, price, amount)
-			*/
+		*/
 		} catch (UnknownPartnerException e) {
 			throw new UnknownPartnerKeyException(e.getKey());
 		}

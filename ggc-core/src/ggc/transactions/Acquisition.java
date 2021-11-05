@@ -22,4 +22,13 @@ public class Acquisition extends Transaction {
 	public void pay() {
 		setPaid(true);
 	}
+
+	@Override
+	public String toString() {
+		return String.format("COMPRA|%s|%s|%s|%d|%d|%d",
+							getID(), getPartner().getID(),
+							getProduct().getID(), getQuantity(),
+							(int)getBaseValue(), getPaymentDate()
+							);
+	}
 }

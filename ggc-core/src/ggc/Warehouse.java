@@ -440,6 +440,16 @@ public class Warehouse implements Serializable {
 	 */
 
 	/**
+	 * Checks if there's a registered Transaction with a given ID		
+	 * 
+	 * @param tID Transaction's ID
+	 * @return boolean 
+	 */
+	public boolean transactionExists(int tID) {
+		return _transactions.containsKey(tID);
+	}
+
+	/**
 	 * Register a new acquisition
 	 * 
 	 */
@@ -459,5 +469,17 @@ public class Warehouse implements Serializable {
 
 		_transactions.put(id, accq);
 	}
-	
+
+	/**
+	 * returns a String representation of a transaction
+	 * 
+	 * @param tID Transaction's ID
+	 * 
+	 * @return String representing a transaction
+	 */
+	public String getTransacation(int tID) throws UnknownTransactionException {
+		if (!transactionExists(tID))
+			throw new UnknownTransactionException(tID);
+		return _transactions.get(tID).toString();
+	}
 }
