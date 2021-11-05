@@ -2,11 +2,14 @@ package ggc.transactions;
 
 import ggc.util.Visitor;
 
+import ggc.partners.Partner;
+import ggc.products.Product;
+
 public class Sale extends Transaction {
 	private double _paidValue = 0;
 
-	public Sale(String id) {
-		super(id);
+	public Sale(int id, Product product, Partner partner, int quantity, double baseValue) {
+		super(id, product, partner, quantity, baseValue);
 	}
 
 	public double getPaidValue() {

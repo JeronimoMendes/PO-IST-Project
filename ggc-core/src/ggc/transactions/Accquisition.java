@@ -2,9 +2,15 @@ package ggc.transactions;
 
 import ggc.util.Visitor;
 
+import ggc.partners.Partner;
+import ggc.products.Product;
+
+
 public class Accquisition extends Transaction {
-	public Accquisition(String id) {
-		super(id);
+	public Accquisition(int id, Product product, Partner partner, int quantity, double baseValue, int date) {
+		super(id, product, partner, quantity, baseValue);
+		setPaymentDate(date);
+		pay();
 	}
 
 	@Override
@@ -13,5 +19,7 @@ public class Accquisition extends Transaction {
 	}
 
 	@Override
-	public void pay() {}
+	public void pay() {
+		setPaid(true);
+	}
 }

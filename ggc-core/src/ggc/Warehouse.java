@@ -23,6 +23,7 @@ import ggc.util.AccountingBudget;
 import ggc.util.ReadyBudget;
 import ggc.transactions.Transaction;
 import ggc.util.Visitor;
+import ggc.transactions.Accquisition;
 
 import java.util.Collections;
 
@@ -43,12 +44,15 @@ public class Warehouse implements Serializable {
 
 	/** Warehouse's batches */
 	private List<Batch> _batches = new ArrayList<Batch>();
-
+	
 	/** Warehouse's product */
 	private Map<String, Product> _products = new TreeMap<String, Product>(new CollatorWrapper());
 
 	/** Map tree of transactions */
 	private Map<Integer, Transaction> _transactions = new TreeMap<Integer, Transaction>();
+
+	/** Content of the warehouse */
+	private Map<Product, Integer> _stock = new TreeMap<Product, Integer>();
 	
 	/**
 	 * ########################################################################
@@ -429,4 +433,31 @@ public class Warehouse implements Serializable {
 		return info;
 	}
 
+	/**
+	 * #################################################################################
+	 * ################################# Transactions ##################################
+	 * #################################################################################
+	 */
+
+	/**
+	 * Register a new accquisition
+	 * 
+	 */
+	public void registerAccquisition(String productID, String partnerID, double price, int amount) 
+		throws UnknownPartnerException, UnknownProductException
+	{
+		if (!checkPartner(partnerID)) 
+			throw new UnknownPartnerException(partnerID);
+
+		if (!checkProduct(productID)) 
+			throw new UnknownProductException(productID);
+
+		int id = _transactions.size();
+
+		Accquisition accq = new Accquisition(id, _products.get(productID),
+												_partners.get(partnerID), amount, price, _date);
+
+		_transactions.put(id, accq);
+	}
+	
 }

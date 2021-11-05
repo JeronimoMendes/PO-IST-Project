@@ -7,7 +7,7 @@ import ggc.products.Product;
 
 public abstract class Transaction implements Visitable {
 	/** Transaction's ID */
-	private String _id;
+	private int _id;
 
 	/** Partner with whom the transaction is */
 	private Partner _partner;
@@ -27,8 +27,12 @@ public abstract class Transaction implements Visitable {
 	/** Base value of the transaction */
 	private double _baseValue;
 
-	public Transaction(String id) {
+	public Transaction(int id, Product product, Partner partner, int quantity, double baseValue) {
 		_id = id;
+		_product = product;
+		_partner = partner;
+		_quantity = quantity;
+		_baseValue = baseValue;
 	}
 
 	public double getBaseValue() {
@@ -37,6 +41,14 @@ public abstract class Transaction implements Visitable {
 
 	public boolean isPaid() {
 		return _paid;
+	}
+
+	public void setPaymentDate(int date) {
+		_paymentDate = date;
+	}
+
+	public void setPaid(boolean paid) {
+		_paid = paid;
 	}
 
 	public abstract void pay();

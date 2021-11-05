@@ -240,4 +240,18 @@ public class WarehouseManager {
 		return _warehouse.getBatchesUnderPrice(price);
 	}
 
+	/**
+	 * #################################################################################
+	 * ################################# Transactions ##################################
+	 * #################################################################################
+	 */
+
+	/**
+	 * Register a new accquisition
+	 * 
+	 */
+	public void registerAccquisition(String productID, String partnerID, double price, int amount)
+		throws UnknownPartnerException, UnknownProductException {
+		_warehouse.registerAccquisition(productID, partnerID, price, amount);
+	}
 }
