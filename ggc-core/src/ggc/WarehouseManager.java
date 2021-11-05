@@ -247,11 +247,11 @@ public class WarehouseManager {
 	 */
 
 	/**
-	 * Register a new accquisition
+	 * Register a new acquisition
 	 * 
 	 */
-	public void registerAccquisition(String productID, String partnerID, double price, int amount)
+	public void registerAcquisition(String productID, String partnerID, double price, int amount)
 		throws UnknownPartnerException, UnknownProductException {
-		_warehouse.registerAccquisition(productID, partnerID, price, amount);
+		_warehouse.registerAcquisition(productID, partnerID, price, amount);
 	}
 }

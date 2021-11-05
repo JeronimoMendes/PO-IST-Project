@@ -1,7 +1,7 @@
 package ggc.util;
 
 import ggc.transactions.Sale;
-import ggc.transactions.Accquisition;
+import ggc.transactions.Acquisition;
 import ggc.transactions.Breakdown;
 
 public class AccountingBudget implements Visitor {
@@ -13,7 +13,7 @@ public class AccountingBudget implements Visitor {
 	}
 
 	@Override
-	public void visit(Accquisition accq) {
+	public void visit(Acquisition accq) {
 		_budget -= accq.getBaseValue();
 	}
 

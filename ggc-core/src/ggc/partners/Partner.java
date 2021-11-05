@@ -31,8 +31,8 @@ public class Partner implements Observer {
 	/** Status that distinguishs parterns */
 	private Status _status = new NormalStatus();;
 
-	/** Total value of accquisitions */
-	private double _accquisitionsValue = 0;
+	/** Total value of acquisitions */
+	private double _acquisitionsValue = 0;
 
 	/** Total value of sales */
 	private double _salesValue = 0;
@@ -88,7 +88,7 @@ public class Partner implements Observer {
 			"%s|%s|%s|%s|%d|%d|%d|%d",
 			_id, _name, _address,
 			_status.toString(), _score,
-			(int)_accquisitionsValue, (int)_salesValue, (int)_salesPaidValue
+			(int)_acquisitionsValue, (int)_salesValue, (int)_salesPaidValue
 		);
 
 		return res;

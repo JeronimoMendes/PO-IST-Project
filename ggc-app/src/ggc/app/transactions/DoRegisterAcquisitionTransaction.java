@@ -3,6 +3,7 @@ package ggc.app.transactions;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
 import ggc.WarehouseManager;
+import pt.tecnico.uilib.forms.Form;
 
 import ggc.exceptions.UnknownPartnerException;
 import ggc.exceptions.UnknownProductException;
@@ -24,11 +25,29 @@ public class DoRegisterAcquisitionTransaction extends Command<WarehouseManager> 
 
 	@Override
 	public final void execute() throws CommandException {
-		try {
-			_receiver.registerAccquisition(stringField("product"), stringField("partner"),
-											realField("price"), integerField("amount"));
-		} catch (UnknownProductException e) {
+		String product;
+		String partner;
+		double price;
+		int amount;
 
+		try {
+			product = stringField("product");
+			partner = stringField("partner");
+			price = realField("price");
+			amount = integerField("amount");
+
+			_receiver.registerAcquisition(product, partner, price, amount);
+		} catch (UnknownProductException e) {
+			/*
+			if (Form.requestString(Prompt.addRecipe()).compare("Sim")) {
+				String recipe = Form.requestString(Prompt.numberOfComponents());
+				double alpha = Form.requestReal(Prompt.alpha());
+				Strign id = Form.requestString(Prompt.productKey());
+				int amount = Form.requestInteger(Prompt.amount());
+				_receiver.registerAcquisition(id, partner, price, amount)
+			}
+			_receiver.registerAcquisition(product, partner, price, amount)
+			*/
 		} catch (UnknownPartnerException e) {
 			throw new UnknownPartnerKeyException(e.getKey());
 		}

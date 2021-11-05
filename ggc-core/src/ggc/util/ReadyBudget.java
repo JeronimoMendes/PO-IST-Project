@@ -1,7 +1,7 @@
 package ggc.util;
 
 import ggc.transactions.Sale;
-import ggc.transactions.Accquisition;
+import ggc.transactions.Acquisition;
 import ggc.transactions.Breakdown;
 
 public class ReadyBudget implements Visitor {
@@ -14,7 +14,7 @@ public class ReadyBudget implements Visitor {
 	}
 
 	@Override
-	public void visit(Accquisition accq) {
+	public void visit(Acquisition accq) {
 		if (accq.isPaid())
 			_budget -= accq.getBaseValue();
 	}

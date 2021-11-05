@@ -23,7 +23,7 @@ import ggc.util.AccountingBudget;
 import ggc.util.ReadyBudget;
 import ggc.transactions.Transaction;
 import ggc.util.Visitor;
-import ggc.transactions.Accquisition;
+import ggc.transactions.Acquisition;
 
 import java.util.Collections;
 
@@ -440,10 +440,10 @@ public class Warehouse implements Serializable {
 	 */
 
 	/**
-	 * Register a new accquisition
+	 * Register a new acquisition
 	 * 
 	 */
-	public void registerAccquisition(String productID, String partnerID, double price, int amount) 
+	public void registerAcquisition(String productID, String partnerID, double price, int amount) 
 		throws UnknownPartnerException, UnknownProductException
 	{
 		if (!checkPartner(partnerID)) 
@@ -454,7 +454,7 @@ public class Warehouse implements Serializable {
 
 		int id = _transactions.size();
 
-		Accquisition accq = new Accquisition(id, _products.get(productID),
+		Acquisition accq = new Acquisition(id, _products.get(productID),
 												_partners.get(partnerID), amount, price, _date);
 
 		_transactions.put(id, accq);
