@@ -62,6 +62,22 @@ public class Partner implements Observer {
 		_address = address;
 	}
 
+	public double getSalesValue() {
+		return _salesValue;
+	}
+
+	public void setSalesValue(double newSalesValue) {
+		_salesValue = newSalesValue;
+	}
+
+	public double getAcquisitionsValue() {
+		return _acquisitionsValue;
+	}
+
+	public void setAcquisitionsValue(double newAcquisitionsValue) {
+		_acquisitionsValue = newAcquisitionsValue;
+	}
+
 	public String getID() {
 		return _id;
 	}
@@ -92,7 +108,7 @@ public class Partner implements Observer {
 			"%s|%s|%s|%s|%d|%d|%d|%d",
 			_id, _name, _address,
 			_status.toString(), _score,
-			(int)_acquisitionsValue, (int)_salesValue, (int)_salesPaidValue
+			(int)_salesValue, (int)_acquisitionsValue, (int)_salesPaidValue
 		);
 
 		return res;

@@ -9,6 +9,7 @@ import ggc.products.Product;
 public class Acquisition extends Transaction {
 	public Acquisition(int id, Product product, Partner partner, int quantity, double baseValue, int date) {
 		super(id, product, partner, quantity, baseValue);
+		partner.setSalesValue(partner.getSalesValue() + baseValue * quantity);
 		setPaymentDate(date);
 		pay();
 	}
