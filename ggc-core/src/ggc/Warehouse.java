@@ -464,6 +464,11 @@ public class Warehouse implements Serializable {
 
 		int id = _transactions.size();
 
+		Batch newBatch = new Batch(partnerID, productID, amount, price);
+		_batches.add(newBatch);
+
+		_products.get(productID).update(price, amount, false);
+
 		Acquisition accq = new Acquisition(id, _products.get(productID),
 												_partners.get(partnerID), amount, price, _date);
 

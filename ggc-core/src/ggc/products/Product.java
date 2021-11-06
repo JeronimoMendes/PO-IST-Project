@@ -14,7 +14,10 @@ public class Product implements Observable {
 	private String _id;
 
 	/** Product's max price */
-	private double _maxPrice;
+	private double _maxPrice = 0;
+
+	/** Product's min price */
+	private double _minPrice = 0;
 
 	/** Product's stock */
 	private int _stock;
@@ -53,9 +56,14 @@ public class Product implements Observable {
 	public void update(double price, int stock, boolean importing) {
 		if (_maxPrice < price) {
 			_maxPrice = price;
+		}
+		
+		if (_minPrice > price || _minPrice == 0) {
+			_minPrice = price;
 			if (!importing) 
 				notifyObservers(String.format("BARGAIN|%s|%s", _id, (int)price));
 		}
+
 		_stock += stock;
 		if (!importing && stock == _stock)
 			notifyObservers(String.format("NEW|%s|%s", _id, (int)price));
