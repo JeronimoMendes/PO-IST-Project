@@ -27,12 +27,12 @@ public abstract class Transaction implements Visitable {
 	/** Base value of the transaction */
 	private double _baseValue;
 
-	public Transaction(int id, Product product, Partner partner, int quantity, double baseValue) {
+	public Transaction(int id, Product product, Partner partner, int quantity, double unityValue) {
 		_id = id;
 		_product = product;
 		_partner = partner;
 		_quantity = quantity;
-		_baseValue = baseValue;
+		_baseValue = unityValue * quantity;
 	}
 
 	public double getBaseValue() {
