@@ -21,6 +21,7 @@ import ggc.partners.Observer;
 import ggc.transactions.Transaction;
 import ggc.util.AccountingBudget;
 import ggc.util.ReadyBudget;
+import ggc.util.IsAcquisition;
 import ggc.transactions.Transaction;
 import ggc.util.Visitor;
 import ggc.transactions.Acquisition;
@@ -486,5 +487,32 @@ public class Warehouse implements Serializable {
 		if (!transactionExists(tID))
 			throw new UnknownTransactionException(tID);
 		return _transactions.get(tID).toString();
+	}
+
+	/**
+	 * Returns a string representing all the acquisitions with a given partner
+	 * 
+	 * @param pID partner's id
+	 * 
+	 * @return String representation of transactions
+	 */
+	public String getAcquisitionsWithPartner(String pID) throws UnknownPartnerException {
+		if (!checkPartner(pID))
+			throw new UnknownPartnerException(pID);
+
+		Visitor visitor = new IsAcquisition();
+		visitTransactions(visitor);
+
+		List<Transaction> tList = visitor.getTransactions().stream().filter(tr -> tr.getPartner().getID().equals(pID))
+									.collect(Collectors.toList());
+		String info = "";
+		for (Transaction t: tList)
+			info += t.toString() + "\n";
+		
+		if (info.length() > 0)
+			info = info.substring(0, info.length() - 1);
+
+
+		return info;
 	}
 }

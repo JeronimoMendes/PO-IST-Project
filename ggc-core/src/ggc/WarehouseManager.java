@@ -265,4 +265,15 @@ public class WarehouseManager {
 	public String getTransacation(int tID) throws UnknownTransactionException {
 		return _warehouse.getTransacation(tID);
 	}
+
+	/**
+	 * Returns a string representing all the acquisitions with a given partner
+	 * 
+	 * @param pID partner's id
+	 * 
+	 * @return String representation of transactions
+	 */
+	public String getAcquisitionsWithPartner(String pID) throws UnknownPartnerException {
+		return _warehouse.getAcquisitionsWithPartner(pID);
+	}
 }

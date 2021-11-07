@@ -1,8 +1,12 @@
 package ggc.util;
 
+import java.util.List;
+
 import ggc.transactions.Sale;
 import ggc.transactions.Acquisition;
 import ggc.transactions.Breakdown;
+import ggc.transactions.Transaction;
+
 
 public class AccountingBudget implements Visitor {
 	private double _budget = 0;
@@ -26,4 +30,9 @@ public class AccountingBudget implements Visitor {
 	public double getBudget() {
 		return _budget;
 	}
+
+	@Override
+	public List<Transaction> getTransactions() {
+		return null;
+	};
 }
