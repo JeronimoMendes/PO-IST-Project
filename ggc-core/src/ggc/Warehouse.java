@@ -317,9 +317,11 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @param pID Product's ID
 	 */
-	public void registerProduct(String pID) {
+	public Product registerProduct(String pID) {
 		Product newProduct = new Product(pID, new ArrayList<Observer>(_partners.values()));
 		_products.put(pID, newProduct);
+
+		return newProduct;
 	}
 
 	/**
@@ -327,11 +329,11 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @param pID Product's ID
 	 */
-	public void registerProduct(String pID, double alpha, String recipe) {
-		// TODO: parse the recipe
-
+	public Product registerProduct(String pID, double alpha, String recipe) {
 		Product newProduct = new ComposedProduct(pID, new ArrayList<Observer>(_partners.values()), alpha, recipe);
 		_products.put(pID, newProduct);
+
+		return newProduct;
 	}
 
 	/**
@@ -451,7 +453,7 @@ public class Warehouse implements Serializable {
 	}
 
 	/**
-	 * Register a new acquisition
+	 * Register a new acquisition. Basically a function that accepts keys instead of objects
 	 * 
 	 */
 	public void registerAcquisition(String productID, String partnerID, double price, int amount) 
@@ -463,17 +465,44 @@ public class Warehouse implements Serializable {
 		if (!checkProduct(productID)) 
 			throw new UnknownProductException(productID);
 
+		registerAcquisition(_products.get(productID), _partners.get(partnerID), price, amount, false);
+	}
+
+
+	/**
+	 * Register a new acquisition
+	 * 
+	 */
+	public void registerAcquisition(Product product, Partner partner, double price, int amount, boolean isProductNew) {
 		int id = _transactions.size();
 
-		Batch newBatch = new Batch(partnerID, productID, amount, price);
+		Batch newBatch = new Batch(partner.getID(), product.getID(), amount, price);
 		_batches.add(newBatch);
 
-		_products.get(productID).update(price, amount, false);
+		product.update(price, amount, isProductNew);
 
-		Acquisition accq = new Acquisition(id, _products.get(productID),
-												_partners.get(partnerID), amount, price, _date);
+		Acquisition accq = new Acquisition(id, product, partner, amount, price, _date);
 
 		_transactions.put(id, accq);
+	}
+
+	/**
+	 * Register a new simple Product and Transaction
+	 */
+	public void registerProductInAcquisition(String product, String partner, double price, int amount) {
+		Product newProduct = registerProduct(product);
+
+		registerAcquisition(newProduct, _partners.get(partner), price, amount, true);
+	}
+
+	/**
+	 * Register a new complex Product and Transaction
+	 */
+	public void registerProductInAcquisition(String product, String partner, double price,
+												int amount, String recipe, double alpha) {
+		Product newProduct = registerProduct(product, alpha, recipe);
+
+		registerAcquisition(newProduct, _partners.get(partner), price, amount, true);
 	}
 
 	/**

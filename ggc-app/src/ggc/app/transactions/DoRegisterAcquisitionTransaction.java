@@ -25,29 +25,32 @@ public class DoRegisterAcquisitionTransaction extends Command<WarehouseManager> 
 
 	@Override
 	public final void execute() throws CommandException {
-		String product;
-		String partner;
-		double price;
-		int amount;
+		String product = stringField("product");
+		String partner = stringField("partner");
+		double price = realField("price");
+		int amount = integerField("amount");
 
 		try {
-			product = stringField("product");
-			partner = stringField("partner");
-			price = realField("price");
-			amount = integerField("amount");
-
 			_receiver.registerAcquisition(product, partner, price, amount);
 		} catch (UnknownProductException e) {
-			/*
+			
 			if (Form.confirm(Prompt.addRecipe())) {
-				String recipe = Form.requestString(Prompt.numberOfComponents());
 				double alpha = Form.requestReal(Prompt.alpha());
-				Strign id = Form.requestString(Prompt.productKey());
-				int amount = Form.requestInteger(Prompt.amount());
-				_receiver.registerAcquisition(id, partner, price, amount)
+				int numberOfComponents = Form.requestInteger(Prompt.numberOfComponents());
+				String recipe = "";
+
+				for (int i = 0; i < numberOfComponents; i++) {
+					String ingredient = Form.requestString(Prompt.productKey());
+					int iAmount = Form.requestInteger(Prompt.amount());
+					recipe += String.format("%s:%d", ingredient, iAmount);
+					if (i == numberOfComponents - 1) recipe += "#";
+				}
+
+				_receiver.registerProductInAcquisition(product, partner, price, amount, recipe, alpha);
+			} else {
+				_receiver.registerProductInAcquisition(product, partner, price, amount);
 			}
-			_receiver.registerAcquisition(product, partner, price, amount)
-		*/
+
 		} catch (UnknownPartnerException e) {
 			throw new UnknownPartnerKeyException(e.getKey());
 		}

@@ -256,6 +256,21 @@ public class WarehouseManager {
 	}
 
 	/**
+	 * Register a new simple Product and Transaction
+	 */
+	public void registerProductInAcquisition(String product, String partner, double price, int amount) {
+		_warehouse.registerProductInAcquisition(product, partner, price, amount);
+	}
+
+	/**
+	 * Register a new complex Product and Transaction
+	 */
+	public void registerProductInAcquisition(String product, String partner,
+											double price, int amount, String recipe, double alpha) {
+		_warehouse.registerProductInAcquisition(product, partner, price, amount, recipe, alpha);
+	}
+
+	/**
 	 * returns a String representation of a transaction
 	 * 
 	 * @param tID Transaction's ID
