@@ -37,10 +37,14 @@ public class Product implements Observable {
 	public String getID() { return _id; }
 
 	public double getMaxPrice() { return _maxPrice; }
+	
+	public void setMaxPrice(double price) { _maxPrice = price; }
+
+	public double getMinPrice() { return _minPrice; }
+	
+	public void setMinPrice(double price) { _minPrice = price; }
 
 	public int getStock() { return _stock; }
-
-	public void setMaxPrice(double price) { _maxPrice = price; }
 
 	public void setStock(int newStock) { _stock = newStock; }
 
@@ -67,6 +71,10 @@ public class Product implements Observable {
 		_stock += stock;
 		if (!importing && stock == _stock)
 			notifyObservers(String.format("NEW|%s|%s", _id, (int)price));
+	}
+
+	public void update(int amount) {
+		_stock += amount;
 	}
 
 	@Override

@@ -215,7 +215,7 @@ public class WarehouseManager {
 	 * @return String representing a list of batches
 	 */
 	public String getBatchesOfProduct(String pID) throws UnknownProductException {
-		return _warehouse.getBatchesOfProduct(pID);
+		return _warehouse.getStrOfBatches(_warehouse.getBatchesOfProduct(pID));
 	}
 
 	/**
@@ -290,5 +290,18 @@ public class WarehouseManager {
 	 */
 	public String getAcquisitionsWithPartner(String pID) throws UnknownPartnerException {
 		return _warehouse.getAcquisitionsWithPartner(pID);
+	}
+
+	/**
+	 * Registers a new sale
+	 * 
+	 * @param partnerID partner's id
+	 * @param productID product's id
+	 * @param date payment deadline
+	 * @param amount amount of product being bought
+	 */
+	public void registerSale(String partnerID, String productID, int date, int amount) 
+		throws UnknownPartnerException, UnknownProductException {
+		_warehouse.registerSale(partnerID, productID, date, amount);
 	}
 }

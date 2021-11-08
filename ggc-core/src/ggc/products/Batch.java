@@ -65,6 +65,8 @@ public class Batch implements Serializable, Comparable<Batch> {
 	 */
 	public int getStock() { return _stock; }
 
+	public void setStock(int newStock) { _stock = newStock; }
+
 	/**
 	 * Returns the price per unit of product
 	 * 

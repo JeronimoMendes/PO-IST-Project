@@ -25,6 +25,7 @@ import ggc.util.IsAcquisition;
 import ggc.transactions.Transaction;
 import ggc.util.Visitor;
 import ggc.transactions.Acquisition;
+import ggc.transactions.Sale;
 
 import java.util.Collections;
 
@@ -363,15 +364,26 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @return batches list of batches of the given product
 	 */
-	public String getBatchesOfProduct(String pID) throws UnknownProductException {
+	public List<Batch> getBatchesOfProduct(String pID) throws UnknownProductException {
 		if (!checkProduct(pID)) {
 			throw new UnknownProductException(pID);
 		}
+		return getBatchesOfProduct(_products.get(pID));
+	}
+	/**
+	 * Returns an array of batchs of a given Product
+	 * 
+	 * @param product Product
+	 * 
+	 * @return batches list of batches of the given product
+	 */
+	public List<Batch> getBatchesOfProduct(Product product) {
 
-		List<Batch> list = _batches.stream().filter(batch -> batch.getProduct().equals(pID))
-											.collect(Collectors.toList());
+		List<Batch> list = _batches.stream()
+								.filter(batch -> batch.getProduct().equals(product.getID()) && batch.getStock() > 0)
+								.collect(Collectors.toList());
 
-		return getStrOfBatches(list);
+		return list;
 	}
 
 	/**
@@ -386,8 +398,9 @@ public class Warehouse implements Serializable {
 			throw new UnknownPartnerException(pID);
 		}
 
-		List<Batch> list = _batches.stream().filter(batch -> batch.getSupplier().equals(pID))
-											.collect(Collectors.toList());
+		List<Batch> list = _batches.stream()
+							.filter(batch -> batch.getSupplier().equals(pID) && batch.getStock() > 0)
+							.collect(Collectors.toList());
 
 		return getStrOfBatches(list);
 	}
@@ -400,8 +413,9 @@ public class Warehouse implements Serializable {
 	 * @return batches list of batches under the given price
 	 */
 	public String getBatchesUnderPrice(int price) {
-		List<Batch> list = _batches.stream().filter(batch -> batch.getPrice() < price)
-											.collect(Collectors.toList());
+		List<Batch> list = _batches.stream()
+						.filter(batch -> batch.getPrice() < price && batch.getStock() > 0)
+						.collect(Collectors.toList());
 
 		return getStrOfBatches(list);
 	}
@@ -412,7 +426,8 @@ public class Warehouse implements Serializable {
 	 * @return String info of all available batches
 	 */
 	public String listAvailableBatches() {
-		return getStrOfBatches(_batches); // remove the last \n
+		return getStrOfBatches(_batches.stream().filter(b -> b.getStock() > 0)
+												.collect(Collectors.toList())); 
 	}
 
 	/**
@@ -543,5 +558,54 @@ public class Warehouse implements Serializable {
 
 
 		return info;
+	}
+
+	/**
+	 * Registers a new sale
+	 * 
+	 * @param partnerID partner's id
+	 * @param productID product's id
+	 * @param date payment deadline
+	 * @param amount amount of product being bought
+	 */
+	public void registerSale(String partnerID, String productID, int date, int amount) 
+		throws UnknownPartnerException, UnknownProductException {
+		if (!checkProduct(productID)) 
+			throw new UnknownProductException(productID);
+		if (!checkPartner(partnerID)) 
+			throw new UnknownPartnerException(partnerID);
+
+		Product product = _products.get(productID);
+		product.update(-amount);
+		updateBatches(product, amount);
+
+		double basePrice = product.getMinPrice();
+		int id = _transactions.size();
+
+		Sale newSale = new Sale(id, product, _partners.get(partnerID),
+									amount, basePrice, date);
+
+		_transactions.put(id, newSale);
+	}
+
+	/**
+	 * Updates batches stock when a product is bought
+	 * 
+	 * @param product Product thats being sold
+	 * @param amount units of the product being sold
+	 */
+	public void updateBatches(Product product, int amount) {
+		List<Batch> batches = getBatchesOfProduct(product);
+
+		for (Batch batch: batches) {
+			int batchStock = batch.getStock();
+			if (batchStock - amount < 0) {
+				batch.setStock(0);
+				amount = -(batchStock - amount);
+			} else {
+				batch.setStock(batchStock - amount);
+				break;
+			}
+		}
 	}
 }
