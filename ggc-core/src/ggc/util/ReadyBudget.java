@@ -13,7 +13,7 @@ public class ReadyBudget implements Visitor {
 	@Override
 	public void visit(Sale sale) {
 		if (sale.isPaid())
-			_budget += sale.getPaidValue();
+			_budget += sale.getTotalValue();
 	}
 
 	@Override
