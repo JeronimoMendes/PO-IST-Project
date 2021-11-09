@@ -29,7 +29,7 @@ public class Partner implements Observer {
 	private int _score = 0;
 
 	/** Status that distinguishs parterns */
-	private Status _status = new NormalStatus();;
+	private Status _status = new NormalStatus(this);;
 
 	/** Total value of acquisitions */
 	private double _acquisitionsValue = 0;
@@ -78,8 +78,28 @@ public class Partner implements Observer {
 		_acquisitionsValue = newAcquisitionsValue;
 	}
 
+	public void setSalesPaidValue(double newValue) {
+		_salesPaidValue = newValue;
+	}
+
 	public String getID() {
 		return _id;
+	}
+
+	public int getScore() {
+		return _score;
+	}
+
+	public void setScore(int newScore) {
+		_score = newScore;
+	}
+
+	public void setStatus(Status newStatus) {
+		_status = newStatus;
+	}
+
+	public Status getStatus() {
+		return _status;
 	}
 
 	@Override
@@ -100,6 +120,10 @@ public class Partner implements Observer {
 		_notifications.clear();
 
 		return res;
+	}
+	
+	public void pay(double priceToPay) {
+		_salesPaidValue += priceToPay;
 	}
 
 	@Override

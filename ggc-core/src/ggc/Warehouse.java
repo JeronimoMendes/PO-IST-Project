@@ -22,6 +22,7 @@ import ggc.transactions.Transaction;
 import ggc.util.AccountingBudget;
 import ggc.util.ReadyBudget;
 import ggc.util.IsAcquisition;
+import ggc.util.MakePayment;
 import ggc.transactions.Transaction;
 import ggc.util.Visitor;
 import ggc.transactions.Acquisition;
@@ -463,7 +464,7 @@ public class Warehouse implements Serializable {
 	 * @param tID Transaction's ID
 	 * @return boolean 
 	 */
-	public boolean transactionExists(int tID) {
+	public boolean checkTransaction(int tID) {
 		return _transactions.containsKey(tID);
 	}
 
@@ -528,9 +529,11 @@ public class Warehouse implements Serializable {
 	 * @return String representing a transaction
 	 */
 	public String getTransacation(int tID) throws UnknownTransactionException {
-		if (!transactionExists(tID))
+		if (!checkTransaction(tID))
 			throw new UnknownTransactionException(tID);
-		return _transactions.get(tID).toString();
+		Transaction t = _transactions.get(tID);
+		t.setStoreDate(_date);
+		return t.toString();
 	}
 
 	/**
@@ -576,14 +579,20 @@ public class Warehouse implements Serializable {
 			throw new UnknownPartnerException(partnerID);
 
 		Product product = _products.get(productID);
+		Partner partner = _partners.get(partnerID);
+		
 		product.update(-amount);
 		updateBatches(product, amount);
-
+		
 		double basePrice = product.getMinPrice();
+		
+		partner.setAcquisitionsValue(partner.getAcquisitionsValue() + amount * basePrice);
+
 		int id = _transactions.size();
 
 		Sale newSale = new Sale(id, product, _partners.get(partnerID),
 									amount, basePrice, date);
+		
 
 		_transactions.put(id, newSale);
 	}
@@ -607,5 +616,21 @@ public class Warehouse implements Serializable {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Receive a payment from a partner on a sale
+	 * 
+	 * @param tID transaction ID
+	 */
+	public void receivePayment(int tID) throws UnknownTransactionException {
+		if (!checkTransaction(tID))
+			throw new UnknownTransactionException(tID);
+		Visitor makePayment = new MakePayment();
+
+		Transaction transaction = _transactions.get(tID);
+		transaction.setStoreDate(_date);
+
+		transaction.accept(makePayment);
 	}
 }

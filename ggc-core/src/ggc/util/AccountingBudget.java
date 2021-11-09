@@ -13,7 +13,7 @@ public class AccountingBudget implements Visitor {
 
 	@Override
 	public void visit(Sale sale) {
-		_budget += sale.getTotalValue();
+		_budget += sale.getTotalPrice();
 	}
 
 	@Override

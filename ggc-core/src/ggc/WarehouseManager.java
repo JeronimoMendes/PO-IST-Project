@@ -304,4 +304,13 @@ public class WarehouseManager {
 		throws UnknownPartnerException, UnknownProductException {
 		_warehouse.registerSale(partnerID, productID, date, amount);
 	}
+
+	/**
+	 * Receive a payment from a partner on a sale
+	 * 
+	 * @param tID transaction ID
+	 */
+	public void receivePayment(int tID) throws UnknownTransactionException {
+		_warehouse.receivePayment(tID);
+	}
 }

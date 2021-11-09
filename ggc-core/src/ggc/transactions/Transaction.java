@@ -27,6 +27,8 @@ public abstract class Transaction implements Visitable {
 	/** Base value of the transaction */
 	private double _baseValue;
 
+	private int _storeDate;
+
 	public Transaction(int id, Product product, Partner partner, int quantity, double unityValue) {
 		_id = id;
 		_product = product;
@@ -71,6 +73,13 @@ public abstract class Transaction implements Visitable {
 		return _id;
 	}
 
+	public void setStoreDate(int date) {
+		_storeDate = date;
+	}
+
+	public int getStoreDate() {
+		return _storeDate;
+	}
 
 	public abstract void pay();
 }

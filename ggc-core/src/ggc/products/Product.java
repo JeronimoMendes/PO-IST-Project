@@ -22,6 +22,8 @@ public class Product implements Observable {
 	/** Product's stock */
 	private int _stock;
 
+	private int _N = 5;
+
 	/** Observers that will be notified when this Product is updated */
 	private Map<Observer, Boolean> _observers = new HashMap<Observer, Boolean>();
 
@@ -47,6 +49,10 @@ public class Product implements Observable {
 	public int getStock() { return _stock; }
 
 	public void setStock(int newStock) { _stock = newStock; }
+
+	public int getN() {
+		return _N;
+	}
 
 	/**
 	 * This function updates the stock and price.

@@ -16,6 +16,8 @@ public class ComposedProduct extends Product {
 	/** Number that multiplies the combined price of each Product in the recipe */
 	private double _alpha;
 
+	private int _N = 3;
+
 	/**
 	 * Main constructor
 	 */
