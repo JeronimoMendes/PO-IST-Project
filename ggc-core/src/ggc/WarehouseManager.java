@@ -313,4 +313,13 @@ public class WarehouseManager {
 	public void receivePayment(int tID) throws UnknownTransactionException {
 		_warehouse.receivePayment(tID);
 	}
+
+	/**
+	 * Returns all the transaction paid by a partner
+	 * 
+	 * @param pID Partner's ID
+	 */
+	public String lookupPaymentsByPartner(String pID) throws UnknownPartnerException {
+		return _warehouse.lookupPaymentsByPartner(pID);
+	}
 }

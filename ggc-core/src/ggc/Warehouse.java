@@ -25,6 +25,7 @@ import ggc.util.IsAcquisition;
 import ggc.util.MakePayment;
 import ggc.transactions.Transaction;
 import ggc.util.Visitor;
+import ggc.util.Paid;
 import ggc.transactions.Acquisition;
 import ggc.transactions.Sale;
 
@@ -632,5 +633,31 @@ public class Warehouse implements Serializable {
 		transaction.setStoreDate(_date);
 
 		transaction.accept(makePayment);
+	}
+
+	/**
+	 * Returns all the transaction paid by a partner
+	 * 
+	 * @param pID Partner's ID
+	 */
+	public String lookupPaymentsByPartner(String pID) throws UnknownPartnerException {
+		if (!checkPartner(pID))
+			throw new UnknownPartnerException(pID);
+
+		Visitor visitor = new Paid();
+		visitTransactions(visitor);
+		List<Transaction> transactions = visitor.getTransactions().stream()
+										.filter(t -> t.getPartner().getID() == pID)
+										.collect(Collectors.toList());
+
+		String info = "";
+		for (Transaction t: transactions) {
+			info += t.toString() + '\n';
+		}
+
+		if (info.length() > 0)
+			info = info.substring(0, info.length() - 1);
+
+		return info;
 	}
 }
