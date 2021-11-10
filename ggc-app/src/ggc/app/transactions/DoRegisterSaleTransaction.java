@@ -8,6 +8,8 @@ import ggc.exceptions.UnknownPartnerException;
 import ggc.app.exceptions.UnknownPartnerKeyException;
 import ggc.exceptions.UnknownProductException;
 import ggc.app.exceptions.UnknownProductKeyException;
+import ggc.exceptions.NoStockException;
+import ggc.app.exceptions.UnavailableProductException;
 
 
 public class DoRegisterSaleTransaction extends Command<WarehouseManager> {
@@ -22,13 +24,19 @@ public class DoRegisterSaleTransaction extends Command<WarehouseManager> {
 
 	@Override
 	public final void execute() throws CommandException {
+		String partner = stringField("partner");
+		String product = stringField("product");
+		int date = integerField("date");
+		int amount = integerField("amount");
+
 		try {
-			_receiver.registerSale(stringField("partner"), stringField("product"),
-									integerField("date"), integerField("amount"));
+			_receiver.registerSale(partner, product, date, amount);
 		} catch (UnknownPartnerException e) {
 			throw new UnknownPartnerKeyException(e.getKey());
 		} catch (UnknownProductException e) {
 			throw new UnknownProductKeyException(e.getKey());
+		} catch (NoStockException e) {
+			throw new UnavailableProductException(product, amount, e.getCurrentStock());
 		}
 	}
 

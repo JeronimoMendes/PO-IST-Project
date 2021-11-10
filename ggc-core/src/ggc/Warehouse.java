@@ -573,13 +573,17 @@ public class Warehouse implements Serializable {
 	 * @param amount amount of product being bought
 	 */
 	public void registerSale(String partnerID, String productID, int date, int amount) 
-		throws UnknownPartnerException, UnknownProductException {
+		throws UnknownPartnerException, UnknownProductException, NoStockException {
 		if (!checkProduct(productID)) 
 			throw new UnknownProductException(productID);
 		if (!checkPartner(partnerID)) 
 			throw new UnknownPartnerException(partnerID);
-
+		
 		Product product = _products.get(productID);
+		if (product.getStock() < amount) {
+			throw new NoStockException(product.getStock(), amount);
+		}
+		
 		Partner partner = _partners.get(partnerID);
 		
 		product.update(-amount);

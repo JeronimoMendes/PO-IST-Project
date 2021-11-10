@@ -301,7 +301,7 @@ public class WarehouseManager {
 	 * @param amount amount of product being bought
 	 */
 	public void registerSale(String partnerID, String productID, int date, int amount) 
-		throws UnknownPartnerException, UnknownProductException {
+		throws UnknownPartnerException, UnknownProductException, NoStockException {
 		_warehouse.registerSale(partnerID, productID, date, amount);
 	}
 
