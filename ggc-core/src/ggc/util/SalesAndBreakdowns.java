@@ -9,27 +9,29 @@ import ggc.transactions.Sale;
 import ggc.transactions.Breakdown;
 import ggc.transactions.Transaction;
 
-public class Paid implements Visitor {	
+public class SalesAndBreakdowns implements Visitor {	
 	private List<Transaction> _transactions = new ArrayList<Transaction>();
-	private String _pID;
+    private String _pID;
 
-	public Paid(String pID) {
-		_pID = pID;
-	}
+    public SalesAndBreakdowns(String pID) {
+        _pID = pID;
+    }
 
 	@Override
 	public void visit(Acquisition accq) {
+		// do nothing
 	}
 
 	@Override
 	public void visit(Sale sale) {
-		if (sale.isPaid() && sale.getPartner().getID().equals(_pID))
-			_transactions.add(sale);
+        if (sale.getPartner().getID().equals(_pID))
+		    _transactions.add(sale);
 	}
 
 	@Override
 	public void visit(Breakdown breakdown) {
-		// do nothing because it isn't an Acquisition
+        if (breakdown.getPartner().getID().equals(_pID))
+		    _transactions.add(breakdown);
 	}
 
 	@Override

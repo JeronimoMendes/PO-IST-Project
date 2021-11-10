@@ -22,6 +22,7 @@ import ggc.transactions.Transaction;
 import ggc.util.AccountingBudget;
 import ggc.util.ReadyBudget;
 import ggc.util.IsAcquisition;
+import ggc.util.SalesAndBreakdowns;
 import ggc.util.MakePayment;
 import ggc.transactions.Transaction;
 import ggc.util.Visitor;
@@ -650,14 +651,40 @@ public class Warehouse implements Serializable {
 		if (!checkPartner(pID))
 			throw new UnknownPartnerException(pID);
 
-		Visitor visitor = new Paid();
+		Visitor visitor = new Paid(pID);
 		visitTransactions(visitor);
-		List<Transaction> transactions = visitor.getTransactions().stream()
-										.filter(t -> t.getPartner().getID() == pID)
-										.collect(Collectors.toList());
 
+		return strOfTransactions(visitor.getTransactions());
+	}
+
+	/**
+	 * Returns a string will all the sales and breakdowns of a given partner
+	 * 
+	 * @param pID Partner's ID
+	 * 
+	 * @return string
+	 */
+	public String getPartnerSalesAndBreakdowns(String pID) throws UnknownPartnerException {
+		if (!checkPartner(pID))
+			throw new UnknownPartnerException(pID);
+
+			Visitor visitor = new SalesAndBreakdowns(pID);
+			visitTransactions(visitor);
+
+		return strOfTransactions(visitor.getTransactions());
+	}
+
+	/**
+	 * Returns the strings of a given list of transactions
+	 * 
+	 * @param transactions List of Transaction
+	 * 
+	 * @return string
+	 */
+	public String strOfTransactions(List<Transaction> transactions) {
 		String info = "";
 		for (Transaction t: transactions) {
+			t.setStoreDate(_date);
 			info += t.toString() + '\n';
 		}
 

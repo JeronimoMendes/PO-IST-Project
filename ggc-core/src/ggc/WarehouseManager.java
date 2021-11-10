@@ -322,4 +322,15 @@ public class WarehouseManager {
 	public String lookupPaymentsByPartner(String pID) throws UnknownPartnerException {
 		return _warehouse.lookupPaymentsByPartner(pID);
 	}
+
+	/**
+	 * Returns a string will all the sales and breakdowns of a given partner
+	 * 
+	 * @param pID Partner's ID
+	 * 
+	 * @return string
+	 */
+	public String showPartnerSalesAndBreakdowns(String pID) throws UnknownPartnerException {
+		return _warehouse.getPartnerSalesAndBreakdowns(pID);
+	}
 }
