@@ -611,6 +611,8 @@ public class Warehouse implements Serializable {
 	public void updateBatches(Product product, int amount) {
 		List<Batch> batches = getBatchesOfProduct(product);
 
+		Collections.sort(batches, new Batch.PriceComparator());
+
 		for (Batch batch: batches) {
 			int batchStock = batch.getStock();
 			if (batchStock - amount < 0) {

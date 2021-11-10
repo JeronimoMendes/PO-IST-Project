@@ -2,6 +2,7 @@ package ggc.products;
 
 import ggc.partners.Partner;
 import java.io.Serializable;
+import java.util.Comparator;
 
 import ggc.CollatorWrapper;
 
@@ -73,6 +74,13 @@ public class Batch implements Serializable, Comparable<Batch> {
 	 * @return price double
 	 */
 	public double getPrice() { return _price; }
+
+	public static class PriceComparator implements Comparator<Batch> {
+		@Override
+		public int compare(Batch batch1, Batch batch2) {
+			return (int)(batch1.getPrice() - batch2.getPrice());
+		}
+	}
 
 	@Override
 	public String toString() {
