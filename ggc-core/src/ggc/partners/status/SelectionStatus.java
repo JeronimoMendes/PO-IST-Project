@@ -33,7 +33,7 @@ public class SelectionStatus extends Status {
 		Partner partner = getPartner();
 
 		if (interval >= 0) {
-			partner.setScore(partner.getScore() + 10 * (int)sale.getTotalPrice());
+			partner.setScore(partner.getScore() + 10 * (int)(sale.getTotalPrice()));
 		}
 
 		if (interval < -2) {

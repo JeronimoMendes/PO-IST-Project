@@ -32,7 +32,7 @@ public class NormalStatus extends Status {
 		Partner partner = getPartner();
 
 		if (interval >= 0) {
-			partner.setScore(partner.getScore() + 10 * (int)sale.getTotalPrice());
+			partner.setScore(partner.getScore() + 10 * (int)(sale.getTotalPrice()));
 		}
 		if (partner.getScore() > 25000) {
 			partner.setStatus(new EliteStatus(partner));

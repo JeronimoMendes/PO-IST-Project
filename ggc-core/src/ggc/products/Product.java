@@ -122,12 +122,12 @@ public class Product implements Observable, Visitable<VisitorProduct> {
 		if (_minPrice > price || _minPrice == 0) {
 			_minPrice = price;
 			if (!importing) 
-				notifyObservers(String.format("BARGAIN|%s|%s", _id, (int)price));
+				notifyObservers(String.format("BARGAIN|%s|%s", _id, Math.round(price)));
 		}
 
 		_stock += stock;
 		if (!importing && stock == _stock)
-			notifyObservers(String.format("NEW|%s|%s", _id, (int)price));
+			notifyObservers(String.format("NEW|%s|%s", _id, Math.round(price)));
 	}
 
 	public void update(int amount) {

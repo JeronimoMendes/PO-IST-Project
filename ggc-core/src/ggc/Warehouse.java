@@ -733,7 +733,7 @@ public class Warehouse implements Serializable {
 				"%s:%d:%d#",
 				derivative.getID(),
 				quantity * amount,
-				(int)price * quantity * amount
+				Math.round(price) * quantity * amount
 			);
 			
 			Batch newBatch = new Batch(partnerID, derivative.getID(), quantity * amount, price);

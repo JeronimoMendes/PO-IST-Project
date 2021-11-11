@@ -64,7 +64,7 @@ public class Sale extends Transaction {
 		String string = String.format("VENDA|%s|%s|%s|%d|%d|%d|%d",
 							getID(), getPartner().getID(),
 							getProduct().getID(), getQuantity(),
-							(int)getBaseValue(), (int)(getTotalPrice()),
+							Math.round(getBaseValue()), Math.round((getTotalPrice())),
 							_paymentDeadline
 							);
 

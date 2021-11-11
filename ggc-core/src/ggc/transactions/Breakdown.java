@@ -37,7 +37,7 @@ public class Breakdown extends Transaction {
 		return String.format("DESAGREGAÇÃO|%s|%s|%s|%d|%d|%d|%d|%s",
 							getID(), getPartner().getID(),
 							getProduct().getID(), getQuantity(),
-							(int)getBaseValue(), (int)(_vpag),
+							Math.round(getBaseValue()), Math.round((_vpag)),
 							getPaymentDate(), _recipeWithPrices);
 	}
 }

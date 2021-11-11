@@ -29,7 +29,7 @@ public class Acquisition extends Transaction {
 		return String.format("COMPRA|%s|%s|%s|%d|%d|%d",
 							getID(), getPartner().getID(),
 							getProduct().getID(), getQuantity(),
-							(int)getBaseValue(), getPaymentDate()
+							Math.round(getBaseValue()), getPaymentDate()
 							);
 	}
 }

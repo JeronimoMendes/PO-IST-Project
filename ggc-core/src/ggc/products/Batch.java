@@ -84,7 +84,7 @@ public class Batch implements Serializable, Comparable<Batch> {
 
 	@Override
 	public String toString() {
-		return String.format("%s|%s|%d|%d", _product, _supplier, (int)_price, _stock);
+		return String.format("%s|%s|%d|%d", _product, _supplier, Math.round(_price), _stock);
 	}
 
 	@Override

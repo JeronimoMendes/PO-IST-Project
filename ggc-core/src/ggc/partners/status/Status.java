@@ -32,6 +32,6 @@ public abstract class Status implements Serializable{
 	public abstract void pay(Sale sale);
 
 	public void pay(Breakdown breakdown) {
-		_partner.setScore(_partner.getScore() + 10 * (int)breakdown.getTotalPrice());
+		_partner.setScore(_partner.getScore() + 10 * (int)(breakdown.getTotalPrice()));
 	}
 }

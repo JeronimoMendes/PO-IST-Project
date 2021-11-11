@@ -132,7 +132,7 @@ public class Partner implements Observer {
 			"%s|%s|%s|%s|%d|%d|%d|%d",
 			_id, _name, _address,
 			_status.toString(), _score,
-			(int)_salesValue, (int)_acquisitionsValue, (int)_salesPaidValue
+			Math.round(_salesValue), Math.round(_acquisitionsValue), Math.round(_salesPaidValue)
 		);
 
 		return res;
