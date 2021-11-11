@@ -1,5 +1,12 @@
-/AccountingBudget.java/1.1/Fri Nov  5 18:52:07 2021//
-/ReadyBudget.java/1.1/Fri Nov  5 18:52:07 2021//
-/Visitable.java/1.1/Thu Nov  4 00:29:18 2021//
-/Visitor.java/1.1/Fri Nov  5 18:52:06 2021//
+/Visitor.java/1.1/Thu Nov 11 03:16:42 2021//
+/AccountingBudget.java/1.2/Thu Nov 11 00:21:13 2021//
+/IsAcquisition.java/1.1/Thu Nov 11 00:26:58 2021//
+/IsComposed.java/1.1/Thu Nov 11 01:07:53 2021//
+/Paid.java/1.1/Thu Nov 11 00:21:02 2021//
+/ReadyBudget.java/1.2/Thu Nov 11 00:20:52 2021//
+/SalesAndBreakdowns.java/1.1/Thu Nov 11 00:20:48 2021//
+/Visitable.java/1.2/Thu Nov 11 00:18:58 2021//
+/VisitorProduct.java/1.1/Thu Nov 11 01:09:00 2021//
+/VisitorTransaction.java/1.1/Thu Nov 11 00:20:44 2021//
+/MakePayment.java/1.1/Thu Nov 11 00:21:06 2021//
 D

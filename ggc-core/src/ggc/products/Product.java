@@ -8,6 +8,10 @@ import ggc.util.Visitable;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+
+import ggc.exceptions.NoStockException;
 
 public class Product implements Observable, Visitable<VisitorProduct> {
 	private static final long serialVersionUID = 202110272100L;
@@ -25,6 +29,8 @@ public class Product implements Observable, Visitable<VisitorProduct> {
 	private int _stock;
 
 	private int _N = 5;
+
+	private List<Batch> _batches = new ArrayList<Batch>();
 
 	/** Observers that will be notified when this Product is updated */
 	private Map<Observer, Boolean> _observers = new HashMap<Observer, Boolean>();
@@ -50,10 +56,50 @@ public class Product implements Observable, Visitable<VisitorProduct> {
 
 	public int getStock() { return _stock; }
 
+	public boolean checkStock(int amount) throws NoStockException {
+		if (_stock < amount) {
+			throw new NoStockException(_id, _stock, amount);
+		}
+		return true;
+	}
+
 	public void setStock(int newStock) { _stock = newStock; }
+
+	public double priceToPay() {
+		return _minPrice;
+	}
 
 	public int getN() {
 		return _N;
+	}
+
+	public List<Batch> getBatches() {
+		return _batches;
+	}
+
+	public void addBatch(Batch batch) {
+		_batches.add(batch);
+	}
+
+	/**
+	 * Updates batches stock when a product is bought
+	 * 
+	 * @param product Product thats being sold
+	 * @param amount units of the product being sold
+	 */
+	public void updateBatches(int amount) {
+		Collections.sort(_batches, new Batch.PriceComparator());
+
+		for (Batch batch: _batches) {
+			int batchStock = batch.getStock();
+			if (batchStock - amount < 0) {
+				batch.setStock(0);
+				amount = -(batchStock - amount);
+			} else {
+				batch.setStock(batchStock - amount);
+				break;
+			}
+		}
 	}
 
 	// FIXME
@@ -85,6 +131,9 @@ public class Product implements Observable, Visitable<VisitorProduct> {
 	}
 
 	public void update(int amount) {
+		if (amount < 0) {
+			updateBatches(-amount);
+		}
 		_stock += amount;
 	}
 
@@ -109,7 +158,7 @@ public class Product implements Observable, Visitable<VisitorProduct> {
 
 	@Override
 	public String toString() {
-		return String.format("%s|%d|%d", _id, (int)_maxPrice, _stock);
+		return String.format("%s|%d|%d", _id, Math.round(_maxPrice), _stock);
 	}
 
 	@Override

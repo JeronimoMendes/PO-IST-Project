@@ -37,7 +37,7 @@ public class Warehouse implements Serializable {
 	private Map<String, Partner> _partners = new TreeMap<String, Partner>(new CollatorWrapper());
 
 	/** Warehouse's batches */
-	private List<Batch> _batches = new ArrayList<Batch>();
+	//private List<Batch> _batches = new ArrayList<Batch>();
 	
 	/** Warehouse's product */
 	private Map<String, Product> _products = new TreeMap<String, Product>(new CollatorWrapper());
@@ -270,7 +270,8 @@ public class Warehouse implements Serializable {
 		product.update(price, stock, true);
 
 		Batch newBatch = new Batch(sID, pID, stock, price);
-		_batches.add(newBatch);
+		product.addBatch(newBatch);
+		// _batches.add(newBatch);
 	}
 
 	/**
@@ -291,7 +292,8 @@ public class Warehouse implements Serializable {
 		Product product = _products.get(pID);
 		product.update(price, stock, true);
 		Batch newBatch = new Batch(sID, pID, stock, price);
-		_batches.add(newBatch);
+		product.addBatch(newBatch);
+		// _batches.add(newBatch);
 	}
 
 	/**
@@ -321,7 +323,18 @@ public class Warehouse implements Serializable {
 	 * 
 	 * @param pID Product's ID
 	 */
-	public Product registerProduct(String pID, double alpha, String recipe) {
+	public Product registerProduct(String pID, double alpha, String recipeString) {
+		List<Component> parsedRecipe = new ArrayList<Component>();
+		
+		for (String componentString: recipeString.split("#")) {
+			String args[] = componentString.split(":");
+			Product componentProduct = _products.get(args[0]);
+			int quantity = Integer.parseInt(args[1]);
+			parsedRecipe.add(new Component(componentProduct, quantity));
+		}
+
+		Recipe recipe = new Recipe(parsedRecipe, recipeString);
+
 		Product newProduct = new ComposedProduct(pID, new ArrayList<Observer>(_partners.values()), alpha, recipe);
 		_products.put(pID, newProduct);
 
@@ -370,11 +383,21 @@ public class Warehouse implements Serializable {
 	 */
 	public List<Batch> getBatchesOfProduct(Product product) {
 
-		List<Batch> list = _batches.stream()
+		/*List<Batch> list = _batches.stream()
 								.filter(batch -> batch.getProduct().equals(product.getID()) && batch.getStock() > 0)
 								.collect(Collectors.toList());
+		*/
+		return product.getBatches();
+	}
 
-		return list;
+	public List<Batch> getAllBatches() {
+		List<Batch> batches = new ArrayList<Batch>();
+		for (String p: _products.keySet()) {
+			Product product = _products.get(p);
+			batches.addAll(product.getBatches());
+		}
+
+		return batches;
 	}
 
 	/**
@@ -389,7 +412,7 @@ public class Warehouse implements Serializable {
 			throw new UnknownPartnerException(pID);
 		}
 
-		List<Batch> list = _batches.stream()
+		List<Batch> list = getAllBatches().stream()
 							.filter(batch -> batch.getSupplier().equals(pID) && batch.getStock() > 0)
 							.collect(Collectors.toList());
 
@@ -404,7 +427,7 @@ public class Warehouse implements Serializable {
 	 * @return batches list of batches under the given price
 	 */
 	public String getBatchesUnderPrice(int price) {
-		List<Batch> list = _batches.stream()
+		List<Batch> list = getAllBatches().stream()
 						.filter(batch -> batch.getPrice() < price && batch.getStock() > 0)
 						.collect(Collectors.toList());
 
@@ -417,7 +440,7 @@ public class Warehouse implements Serializable {
 	 * @return String info of all available batches
 	 */
 	public String listAvailableBatches() {
-		return getStrOfBatches(_batches.stream().filter(b -> b.getStock() > 0)
+		return getStrOfBatches(getAllBatches().stream().filter(b -> b.getStock() > 0)
 												.collect(Collectors.toList())); 
 	}
 
@@ -433,7 +456,8 @@ public class Warehouse implements Serializable {
 
 		Collections.sort(batches);
 		for(Batch batch: batches) {
-			info += batch.toString() + '\n';
+			if (batch.getStock() > 0)
+				info += batch.toString() + '\n';
 		}
 
 		if (info.length() > 0)
@@ -483,7 +507,8 @@ public class Warehouse implements Serializable {
 		int id = _transactions.size();
 
 		Batch newBatch = new Batch(partner.getID(), product.getID(), amount, price);
-		_batches.add(newBatch);
+		product.addBatch(newBatch);
+		//_batches.add(newBatch);
 
 		product.update(price, amount, isProductNew);
 
@@ -569,17 +594,27 @@ public class Warehouse implements Serializable {
 			throw new UnknownPartnerException(partnerID);
 		
 		Product product = _products.get(productID);
+		/*
 		if (product.getStock() < amount) {
-			throw new NoStockException(product.getStock(), amount);
+			throw new NoStockException(product.getID(), product.getStock(), amount);
 		}
+		*/
+		product.checkStock(amount);
 		
 		Partner partner = _partners.get(partnerID);
 		
+		double totalPrice = 0;
+		double difference = amount - product.getStock();
+		double basePrice = product.priceToPay();
+		if (difference > 0) {
+			totalPrice = product.getMinPrice() * (product.getStock());
+
+			totalPrice += product.priceToPay() * difference;
+		
+			basePrice = totalPrice / amount;
+		}
 		product.update(-amount);
-		updateBatches(product, amount);
-		
-		double basePrice = product.getMinPrice();
-		
+				
 		partner.setAcquisitionsValue(partner.getAcquisitionsValue() + amount * basePrice);
 
 		int id = _transactions.size();
@@ -589,29 +624,6 @@ public class Warehouse implements Serializable {
 		
 
 		_transactions.put(id, newSale);
-	}
-
-	/**
-	 * Updates batches stock when a product is bought
-	 * 
-	 * @param product Product thats being sold
-	 * @param amount units of the product being sold
-	 */
-	public void updateBatches(Product product, int amount) {
-		List<Batch> batches = getBatchesOfProduct(product);
-
-		Collections.sort(batches, new Batch.PriceComparator());
-
-		for (Batch batch: batches) {
-			int batchStock = batch.getStock();
-			if (batchStock - amount < 0) {
-				batch.setStock(0);
-				amount = -(batchStock - amount);
-			} else {
-				batch.setStock(batchStock - amount);
-				break;
-			}
-		}
 	}
 
 	/**
@@ -702,9 +714,9 @@ public class Warehouse implements Serializable {
 		if (product.getRecipe() == null) return;
 
 		if (product.getStock() < amount) 
-			throw new NoStockException(product.getStock(), amount);
+			throw new NoStockException(product.getID(), product.getStock(), amount);
 
-		updateBatches(product, amount);
+		product.updateBatches(amount);
 
 		List<Component> derivatives = product.getRecipe().getComponents();
 
@@ -712,7 +724,7 @@ public class Warehouse implements Serializable {
 		String recipeValue = "";
 		for (Component c: derivatives) {
 			int quantity = c.getQuantity();
-			Product derivative = _products.get(c.getProductID());
+			Product derivative = c.getProduct();
 			double price = derivative.getStock() > 0 ?
 							derivative.getMinPrice() : derivative.getMaxPrice();
 		
@@ -725,7 +737,8 @@ public class Warehouse implements Serializable {
 			);
 			
 			Batch newBatch = new Batch(partnerID, derivative.getID(), quantity * amount, price);
-			_batches.add(newBatch);
+			product.addBatch(newBatch);
+			//_batches.add(newBatch);
 
 			product.update(-amount);
 		}

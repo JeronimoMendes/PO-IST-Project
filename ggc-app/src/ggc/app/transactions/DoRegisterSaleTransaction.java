@@ -36,7 +36,7 @@ public class DoRegisterSaleTransaction extends Command<WarehouseManager> {
 		} catch (UnknownProductException e) {
 			throw new UnknownProductKeyException(e.getKey());
 		} catch (NoStockException e) {
-			throw new UnavailableProductException(product, amount, e.getCurrentStock());
+			throw new UnavailableProductException(e.getProductID(), e.getAskedStock(), e.getCurrentStock());
 		}
 	}
 

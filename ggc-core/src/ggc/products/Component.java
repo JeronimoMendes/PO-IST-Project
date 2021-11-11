@@ -7,20 +7,18 @@ public class Component implements Serializable {
 	private int _quantity;
 
 	/** Product's ID that makes up the component */
-	private String _pID;
+	private Product _product;
 
 	/**
 	 * Main constructor
 	 */
-	public Component(String componentString) {
-		String args[] = componentString.split(":");
-
-		_pID = args[0];
-		_quantity = Integer.parseInt(args[1]);
+	public Component(Product product, int amount) {
+		_product = product;
+		_quantity = amount;
 	}
 
-	public String getProductID() {
-		return _pID;
+	public Product getProduct() {
+		return _product;
 	}
 
 	public int getQuantity() {
