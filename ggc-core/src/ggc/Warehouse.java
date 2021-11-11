@@ -35,9 +35,6 @@ public class Warehouse implements Serializable {
 
 	/** Warehouse's partners */
 	private Map<String, Partner> _partners = new TreeMap<String, Partner>(new CollatorWrapper());
-
-	/** Warehouse's batches */
-	//private List<Batch> _batches = new ArrayList<Batch>();
 	
 	/** Warehouse's product */
 	private Map<String, Product> _products = new TreeMap<String, Product>(new CollatorWrapper());
@@ -59,9 +56,7 @@ public class Warehouse implements Serializable {
 	 * @throws IOException
 	 * @throws BadEntryException
 	 */
-	void importFile(String txtfile) throws IOException, BadEntryException, DuplicatePartnerException {
-		// TODO: Add exceptions that come from parseline()
-		
+	public void importFile(String txtfile) throws IOException, BadEntryException, DuplicatePartnerException {
 		BufferedReader input = new BufferedReader(new FileReader(txtfile));
 
 		String line;
@@ -73,9 +68,12 @@ public class Warehouse implements Serializable {
 		input.close();
 	}
 
-	void parseLine(String fields[]) throws DuplicatePartnerException {
-		// TODO: Add exceptions that come from the different objects creations
-
+	/**
+	 * Auxiliates importFile(), parsing each line into an object
+	 * 
+	 * @param fields[] the fields that come from the line split
+	 */
+	public void parseLine(String fields[]) throws DuplicatePartnerException {
 		Pattern partner = Pattern.compile("^(PARTNER)");
 		Pattern simpleBatch = Pattern.compile("^(BATCH_S)");
 		Pattern complexBatch = Pattern.compile("^(BATCH_M)");
@@ -160,7 +158,9 @@ public class Warehouse implements Serializable {
 	/**
 	 * Create new partner
 	 * 
-	 * 
+	 * @param id ID
+	 * @param name name
+	 * @param address address
 	*/
 	public void registerPartner(String id, String name, String address) throws DuplicatePartnerException {
 		if (checkPartner(id)) {
@@ -187,10 +187,7 @@ public class Warehouse implements Serializable {
 
 		Partner partner = _partners.get(partnerKey);
 
-		info += partner.showPartner(); // + "\n";\
-
-		// TODO: Include partner's notifications
-
+		info += partner.showPartner();
 		return info;
 	}
 
@@ -374,6 +371,7 @@ public class Warehouse implements Serializable {
 		}
 		return getBatchesOfProduct(_products.get(pID));
 	}
+
 	/**
 	 * Returns an array of batchs of a given Product
 	 * 
@@ -382,11 +380,6 @@ public class Warehouse implements Serializable {
 	 * @return batches list of batches of the given product
 	 */
 	public List<Batch> getBatchesOfProduct(Product product) {
-
-		/*List<Batch> list = _batches.stream()
-								.filter(batch -> batch.getProduct().equals(product.getID()) && batch.getStock() > 0)
-								.collect(Collectors.toList());
-		*/
 		return product.getBatches();
 	}
 
@@ -485,6 +478,10 @@ public class Warehouse implements Serializable {
 	/**
 	 * Register a new acquisition. Basically a function that accepts keys instead of objects
 	 * 
+	 * @param productID
+	 * @param partnerID
+	 * @param price
+	 * @param amount
 	 */
 	public void registerAcquisition(String productID, String partnerID, double price, int amount) 
 		throws UnknownPartnerException, UnknownProductException
@@ -502,6 +499,11 @@ public class Warehouse implements Serializable {
 	/**
 	 * Register a new acquisition
 	 * 
+	 * @param product
+	 * @param partner
+	 * @param price
+	 * @param amount
+	 * @param isProductNew
 	 */
 	public void registerAcquisition(Product product, Partner partner, double price, int amount, boolean isProductNew) {
 		int id = _transactions.size();
@@ -519,21 +521,33 @@ public class Warehouse implements Serializable {
 
 	/**
 	 * Register a new simple Product and Transaction
+	 * 
+	 * @param productID
+	 * @param partnerID
+	 * @param price
+	 * @param amount
 	 */
-	public void registerProductInAcquisition(String product, String partner, double price, int amount) {
-		Product newProduct = registerProduct(product);
+	public void registerProductInAcquisition(String productID, String partnerID, double price, int amount) {
+		Product newProduct = registerProduct(productID);
 
-		registerAcquisition(newProduct, _partners.get(partner), price, amount, true);
+		registerAcquisition(newProduct, _partners.get(partnerID), price, amount, true);
 	}
 
 	/**
 	 * Register a new complex Product and Transaction
+	 * 
+	 * @param productID
+	 * @param partnerID
+	 * @param price
+	 * @param amount
+	 * @param recipe
+	 * @param alpha
 	 */
-	public void registerProductInAcquisition(String product, String partner, double price,
+	public void registerProductInAcquisition(String productID, String partnerID, double price,
 												int amount, String recipe, double alpha) {
-		Product newProduct = registerProduct(product, alpha, recipe);
+		Product newProduct = registerProduct(productID, alpha, recipe);
 
-		registerAcquisition(newProduct, _partners.get(partner), price, amount, true);
+		registerAcquisition(newProduct, _partners.get(partnerID), price, amount, true);
 	}
 
 	/**
@@ -738,7 +752,6 @@ public class Warehouse implements Serializable {
 			
 			Batch newBatch = new Batch(partnerID, derivative.getID(), quantity * amount, price);
 			product.addBatch(newBatch);
-			//_batches.add(newBatch);
 
 			product.update(-amount);
 		}
