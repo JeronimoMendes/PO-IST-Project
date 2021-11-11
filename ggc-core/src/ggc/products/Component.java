@@ -18,4 +18,12 @@ public class Component implements Serializable {
 		_pID = args[0];
 		_quantity = Integer.parseInt(args[1]);
 	}
+
+	public String getProductID() {
+		return _pID;
+	}
+
+	public int getQuantity() {
+		return _quantity;
+	}
 }

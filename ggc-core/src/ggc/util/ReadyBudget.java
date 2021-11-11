@@ -7,7 +7,7 @@ import ggc.transactions.Acquisition;
 import ggc.transactions.Breakdown;
 import ggc.transactions.Transaction;
 
-public class ReadyBudget implements Visitor {
+public class ReadyBudget implements VisitorTransaction {
 	private double _budget = 0;
 
 	@Override

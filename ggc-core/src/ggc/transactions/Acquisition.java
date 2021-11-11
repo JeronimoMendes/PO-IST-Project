@@ -1,6 +1,6 @@
 package ggc.transactions;
 
-import ggc.util.Visitor;
+import ggc.util.VisitorTransaction;
 
 import ggc.partners.Partner;
 import ggc.products.Product;
@@ -15,7 +15,7 @@ public class Acquisition extends Transaction {
 	}
 
 	@Override
-	public void accept(Visitor visitor) {
+	public void accept(VisitorTransaction visitor) {
 		visitor.visit(this);
 	}
 

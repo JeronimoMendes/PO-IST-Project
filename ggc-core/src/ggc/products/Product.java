@@ -2,12 +2,14 @@ package ggc.products;
 
 import java.io.Serializable;
 import ggc.partners.Observer;
+import ggc.util.VisitorProduct;
+import ggc.util.Visitable;
 
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 
-public class Product implements Observable {
+public class Product implements Observable, Visitable<VisitorProduct> {
 	private static final long serialVersionUID = 202110272100L;
 
 	/** Product's unique ID */
@@ -53,6 +55,9 @@ public class Product implements Observable {
 	public int getN() {
 		return _N;
 	}
+
+	// FIXME
+	public Recipe getRecipe() {return null;};
 
 	/**
 	 * This function updates the stock and price.
@@ -114,5 +119,10 @@ public class Product implements Observable {
 			return _id.equals(p.getID());
 		}
 		return false;
+	}
+
+	@Override
+	public void accept(VisitorProduct visitor) {
+		visitor.visit(this);
 	}
 }

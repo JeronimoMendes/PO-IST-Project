@@ -1,11 +1,12 @@
 package ggc.transactions;
 
 import ggc.util.Visitable;
+import ggc.util.VisitorTransaction;
 
 import ggc.partners.Partner;
 import ggc.products.Product;
 
-public abstract class Transaction implements Visitable {
+public abstract class Transaction implements Visitable<VisitorTransaction> {
 	/** Transaction's ID */
 	private int _id;
 

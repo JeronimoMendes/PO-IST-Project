@@ -8,7 +8,7 @@ import ggc.transactions.Acquisition;
 import ggc.transactions.Breakdown;
 import ggc.transactions.Transaction;
 
-public interface Visitor extends Serializable {
+public interface VisitorTransaction extends Serializable {
 	void visit(Sale sale);
 	void visit(Acquisition accq);
 	void visit(Breakdown breakdown);

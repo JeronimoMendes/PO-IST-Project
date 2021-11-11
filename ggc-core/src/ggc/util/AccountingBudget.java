@@ -8,7 +8,7 @@ import ggc.transactions.Breakdown;
 import ggc.transactions.Transaction;
 
 
-public class AccountingBudget implements Visitor {
+public class AccountingBudget implements VisitorTransaction {
 	private double _budget = 0;
 
 	@Override

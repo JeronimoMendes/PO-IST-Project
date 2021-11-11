@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import ggc.partners.Partner;
 import ggc.transactions.Sale;
+import ggc.transactions.Breakdown;
 
 public abstract class Status implements Serializable{
 	private static final long serialVersionUID = 202110272100L;
@@ -29,4 +30,8 @@ public abstract class Status implements Serializable{
 	public abstract double p4Price(int gap);
 
 	public abstract void pay(Sale sale);
+
+	public void pay(Breakdown breakdown) {
+		_partner.setScore(_partner.getScore() + 10 * (int)breakdown.getTotalPrice());
+	}
 }

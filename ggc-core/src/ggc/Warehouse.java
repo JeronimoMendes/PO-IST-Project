@@ -1,6 +1,5 @@
 package ggc;
 
-import ggc.exceptions.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.BufferedReader;
@@ -13,22 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ggc.partners.Partner;
-import ggc.products.Batch;
-import ggc.products.Product;
-import ggc.products.ComposedProduct;
-import ggc.partners.Observer;
-import ggc.transactions.Transaction;
-import ggc.util.AccountingBudget;
-import ggc.util.ReadyBudget;
-import ggc.util.IsAcquisition;
-import ggc.util.SalesAndBreakdowns;
-import ggc.util.MakePayment;
-import ggc.transactions.Transaction;
-import ggc.util.Visitor;
-import ggc.util.Paid;
-import ggc.transactions.Acquisition;
-import ggc.transactions.Sale;
+import ggc.exceptions.*;
+import ggc.partners.*;
+import ggc.products.*;
+import ggc.transactions.*;
+import ggc.util.*;
+
 
 import java.util.Collections;
 
@@ -137,7 +126,7 @@ public class Warehouse implements Serializable {
 	 * @return Warehouse's ready budget
 	 */
 	public double getReadyBudget() {
-		Visitor visitor = new ReadyBudget();
+		VisitorTransaction visitor = new ReadyBudget();
 		visitTransactions(visitor);
 		return visitor.getBudget();
 	}
@@ -148,7 +137,7 @@ public class Warehouse implements Serializable {
 	 * @return Warehouse's accounting budget
 	 */
 	public double getAccountingBudget() {
-		Visitor visitor = new AccountingBudget();
+		VisitorTransaction visitor = new AccountingBudget();
 		visitTransactions(visitor);
 		return visitor.getBudget();
 	}
@@ -156,7 +145,7 @@ public class Warehouse implements Serializable {
 	/**
 	 * Visits the transactions with a visitor
 	 */
-	public void visitTransactions(Visitor visitor) {
+	public void visitTransactions(VisitorTransaction visitor) {
 		for (Transaction t: _transactions.values())
 			t.accept(visitor);
 	}
@@ -301,7 +290,6 @@ public class Warehouse implements Serializable {
 		
 		Product product = _products.get(pID);
 		product.update(price, stock, true);
-
 		Batch newBatch = new Batch(sID, pID, stock, price);
 		_batches.add(newBatch);
 	}
@@ -549,7 +537,7 @@ public class Warehouse implements Serializable {
 		if (!checkPartner(pID))
 			throw new UnknownPartnerException(pID);
 
-		Visitor visitor = new IsAcquisition();
+		VisitorTransaction visitor = new IsAcquisition();
 		visitTransactions(visitor);
 
 		List<Transaction> tList = visitor.getTransactions().stream().filter(tr -> tr.getPartner().getID().equals(pID))
@@ -634,7 +622,7 @@ public class Warehouse implements Serializable {
 	public void receivePayment(int tID) throws UnknownTransactionException {
 		if (!checkTransaction(tID))
 			throw new UnknownTransactionException(tID);
-		Visitor makePayment = new MakePayment();
+		VisitorTransaction makePayment = new MakePayment();
 
 		Transaction transaction = _transactions.get(tID);
 		transaction.setStoreDate(_date);
@@ -651,7 +639,7 @@ public class Warehouse implements Serializable {
 		if (!checkPartner(pID))
 			throw new UnknownPartnerException(pID);
 
-		Visitor visitor = new Paid(pID);
+		VisitorTransaction visitor = new Paid(pID);
 		visitTransactions(visitor);
 
 		return strOfTransactions(visitor.getTransactions());
@@ -668,7 +656,7 @@ public class Warehouse implements Serializable {
 		if (!checkPartner(pID))
 			throw new UnknownPartnerException(pID);
 
-			Visitor visitor = new SalesAndBreakdowns(pID);
+			VisitorTransaction visitor = new SalesAndBreakdowns(pID);
 			visitTransactions(visitor);
 
 		return strOfTransactions(visitor.getTransactions());
@@ -692,5 +680,68 @@ public class Warehouse implements Serializable {
 			info = info.substring(0, info.length() - 1);
 
 		return info;
+	}
+
+	/**
+	 * Registers a new breakdown
+	 * 
+	 * @param partnerID Partner's ID
+	 * @param productID Product's ID
+	 * @param amount amount of product
+	 */
+	public void registerBreakdown(String partnerID, String productID, int amount)
+		throws UnknownPartnerException, UnknownProductException, NoStockException {
+		if (!checkPartner(partnerID))
+			throw new UnknownPartnerException(partnerID);
+		
+		if (!checkProduct(productID))
+			throw new UnknownProductException(productID);
+			
+		Product product = _products.get(productID);
+		// FIXME
+		if (product.getRecipe() == null) return;
+
+		if (product.getStock() < amount) 
+			throw new NoStockException(product.getStock(), amount);
+
+		updateBatches(product, amount);
+
+		List<Component> derivatives = product.getRecipe().getComponents();
+
+		double insertionPrice = 0;
+		String recipeValue = "";
+		for (Component c: derivatives) {
+			int quantity = c.getQuantity();
+			Product derivative = _products.get(c.getProductID());
+			double price = derivative.getStock() > 0 ?
+							derivative.getMinPrice() : derivative.getMaxPrice();
+		
+			insertionPrice += price * quantity * amount;
+			recipeValue += String.format(
+				"%s:%d:%d#",
+				derivative.getID(),
+				quantity * amount,
+				(int)price * quantity * amount
+			);
+			
+			Batch newBatch = new Batch(partnerID, derivative.getID(), quantity * amount, price);
+			_batches.add(newBatch);
+
+			product.update(-amount);
+		}
+
+		recipeValue = recipeValue.substring(0, recipeValue.length() - 1);
+		double breakdownPrice = product.getMinPrice() * amount - insertionPrice;
+		Breakdown breakdown = new Breakdown(
+			_transactions.size(),
+			product,
+			_partners.get(partnerID),
+			amount,
+			breakdownPrice / amount,
+			Math.abs(breakdownPrice),
+			recipeValue
+		);
+		breakdown.pay();
+		_transactions.put(_transactions.size(), breakdown);
 	}
 }

@@ -9,7 +9,7 @@ import ggc.transactions.Sale;
 import ggc.transactions.Breakdown;
 import ggc.transactions.Transaction;
 
-public class SalesAndBreakdowns implements Visitor {	
+public class SalesAndBreakdowns implements VisitorTransaction {	
 	private List<Transaction> _transactions = new ArrayList<Transaction>();
     private String _pID;
 

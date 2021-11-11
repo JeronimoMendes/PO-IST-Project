@@ -19,6 +19,10 @@ public class Recipe implements Serializable {
 		_recipeString = stringRecipe;
 	}
 
+	public List<Component> getComponents() {
+		return _components;
+	}
+
 	@Override
 	public String toString() {
 		return _recipeString;

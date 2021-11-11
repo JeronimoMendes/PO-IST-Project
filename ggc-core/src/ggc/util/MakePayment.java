@@ -9,7 +9,7 @@ import ggc.transactions.Sale;
 import ggc.transactions.Breakdown;
 import ggc.transactions.Transaction;
 
-public class MakePayment implements Visitor {
+public class MakePayment implements VisitorTransaction {
 	@Override
 	public void visit(Acquisition accq) {
 		// do nothing 

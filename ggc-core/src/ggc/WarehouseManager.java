@@ -333,4 +333,16 @@ public class WarehouseManager {
 	public String showPartnerSalesAndBreakdowns(String pID) throws UnknownPartnerException {
 		return _warehouse.getPartnerSalesAndBreakdowns(pID);
 	}
+
+	/**
+	 * Registers a new breakdown
+	 * 
+	 * @param partnerID Partner's ID
+	 * @param productID Product's ID
+	 * @param amount amount of product
+	 */
+	public void registerBreakdown(String partnerID, String productID, int amount)
+		throws UnknownPartnerException, UnknownProductException, NoStockException {
+		_warehouse.registerBreakdown(partnerID, productID, amount);
+	}
 }

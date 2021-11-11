@@ -2,14 +2,13 @@ package ggc.util;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.lang.reflect.Method;
 
 import ggc.transactions.Acquisition;
 import ggc.transactions.Sale;
 import ggc.transactions.Breakdown;
 import ggc.transactions.Transaction;
 
-public class IsAcquisition implements Visitor {	
+public class IsAcquisition implements VisitorTransaction {	
 	private List<Transaction> _transactions = new ArrayList<Transaction>();
 
 	@Override
