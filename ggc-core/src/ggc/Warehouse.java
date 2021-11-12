@@ -608,11 +608,6 @@ public class Warehouse implements Serializable {
 			throw new UnknownPartnerException(partnerID);
 		
 		Product product = _products.get(productID);
-		/*
-		if (product.getStock() < amount) {
-			throw new NoStockException(product.getID(), product.getStock(), amount);
-		}
-		*/
 		product.checkStock(amount);
 		
 		Partner partner = _partners.get(partnerID);
@@ -724,50 +719,14 @@ public class Warehouse implements Serializable {
 			throw new UnknownProductException(productID);
 			
 		Product product = _products.get(productID);
-		// FIXME
-		if (product.getRecipe() == null) return;
-
 		if (product.getStock() < amount) 
 			throw new NoStockException(product.getID(), product.getStock(), amount);
 
-		product.updateBatches(amount);
+		VisitorProduct visitor = new Break(amount, _transactions.size(), _partners.get(partnerID));
 
-		List<Component> derivatives = product.getRecipe().getComponents();
+		product.accept(visitor);
 
-		double insertionPrice = 0;
-		String recipeValue = "";
-		for (Component c: derivatives) {
-			int quantity = c.getQuantity();
-			Product derivative = c.getProduct();
-			double price = derivative.getStock() > 0 ?
-							derivative.getMinPrice() : derivative.getMaxPrice();
-		
-			insertionPrice += price * quantity * amount;
-			recipeValue += String.format(
-				"%s:%d:%d#",
-				derivative.getID(),
-				quantity * amount,
-				Math.round(price) * quantity * amount
-			);
-			
-			Batch newBatch = new Batch(partnerID, derivative.getID(), quantity * amount, price);
-			product.addBatch(newBatch);
-
-			product.update(-amount);
-		}
-
-		recipeValue = recipeValue.substring(0, recipeValue.length() - 1);
-		double breakdownPrice = product.getMinPrice() * amount - insertionPrice;
-		Breakdown breakdown = new Breakdown(
-			_transactions.size(),
-			product,
-			_partners.get(partnerID),
-			amount,
-			breakdownPrice / amount,
-			Math.abs(breakdownPrice),
-			recipeValue
-		);
-		breakdown.pay();
-		_transactions.put(_transactions.size(), breakdown);
+		if (visitor.getTransaction() != null)
+			_transactions.put(_transactions.size(), visitor.getTransaction());
 	}
 }

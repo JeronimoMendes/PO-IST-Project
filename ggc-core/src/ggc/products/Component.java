@@ -24,4 +24,8 @@ public class Component implements Serializable {
 	public int getQuantity() {
 		return _quantity;
 	}
+
+	public double computePrice() {
+		return _product.getStock() > 0 ? _product.getMinPrice() : _product.getMaxPrice();
+	}
 }

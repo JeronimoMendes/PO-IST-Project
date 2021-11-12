@@ -51,8 +51,6 @@ public class ComposedProduct extends Product {
 		if (amount < 0 && getStock() < -amount) {
 			makeComposed(-amount - getStock());
 			setStock(0);
-		} else if (amount < 0) {
-			setStock(getStock() - amount);
 		} else {
 			setStock(getStock() + amount);
 		}
@@ -61,7 +59,6 @@ public class ComposedProduct extends Product {
 	public void makeComposed(int amount) {
 		double price = _recipe.computeRecipePrice() * (1 + _alpha);
 		_recipe.make(amount);
-		System.out.println(price);
 		if (getMaxPrice() < price) {
 			setMaxPrice(price);
 		}

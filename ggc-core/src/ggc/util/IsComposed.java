@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import ggc.products.Product;
 import ggc.products.ComposedProduct;
+import ggc.transactions.Transaction;
 
 public class IsComposed implements VisitorProduct {	
 	private List<Product> _products = new ArrayList<Product>();
@@ -22,5 +23,10 @@ public class IsComposed implements VisitorProduct {
     @Override
     public List<Product> getProducts() {
 		return _products;
+	}
+
+	@Override
+	public Transaction getTransaction() {
+		return null;
 	}
 }

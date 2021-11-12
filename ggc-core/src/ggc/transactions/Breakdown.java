@@ -27,7 +27,6 @@ public class Breakdown extends Transaction {
 	@Override
 	public void pay() {
 		setPaymentDate(getStoreDate());
-		getPartner().pay(getBaseValue());
 		getPartner().getStatus().pay(this);
 		setPaid(true);
 	}
